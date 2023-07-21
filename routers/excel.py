@@ -2,7 +2,7 @@ from fastapi import APIRouter, File, UploadFile
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse, StreamingResponse
 import io
-from utils.data_manipulation import read_excel, make_excel
+from utils.data_manipulation import read_excel, make_excel, test_function
 
 excel_router = APIRouter()
 
@@ -15,8 +15,13 @@ async def create_upload_file(file: UploadFile = File(...)):
         return JSONResponse(content=jsonable_encoder(df), status_code=201)
     else:
         return JSONResponse({"message": "Invalid file format"}, status_code=400)
-    
-@excel_router.get("/uploadfiles/", tags = ["testing"])
+     
+@excel_router.get("/uploadfile/", tags = ["testing"])
 async def create_download_files():
     excel_writer = make_excel()
     return StreamingResponse(io.BytesIO(excel_writer.getvalue()), media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", headers={"Content-Disposition": "attachment; filename=prueba.xlsx"})
+
+@excel_router.get("/testfunction/", tags = ["testing"])
+async def test_procedure():
+    result = test_function()
+    return result
