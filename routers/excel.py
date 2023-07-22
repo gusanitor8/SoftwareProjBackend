@@ -2,7 +2,7 @@ from fastapi import APIRouter, File, UploadFile
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse, StreamingResponse
 import io
-from utils.data_manipulation import read_excel, make_excel, test_function
+from utils.data_manipulation import read_excel, make_excel, test_function, get_data
 
 excel_router = APIRouter()
 
@@ -23,5 +23,5 @@ async def create_download_files():
 
 @excel_router.get("/testfunction/", tags = ["testing"])
 async def test_procedure():
-    result = test_function()
+    result = get_data()
     return result

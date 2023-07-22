@@ -1,9 +1,10 @@
 import pandas as pd
 from config.database import Session
 from io import BytesIO
-from sqlalchemy import text, MetaData, Table
+from sqlalchemy import text, MetaData, Table, inspect
 from config.database import engine
 from datetime import datetime
+from models.Cuscar import Cuscar
 
 def read_excel(file):
     df = pd.read_excel(BytesIO(file))
@@ -25,6 +26,13 @@ def get_columns(table_name):
     table = Table(table_name, metadata, autoload=True, autoload_with=engine)
     column_names = table.columns.keys()
     return column_names
+
+def get_data():
+    db = Session()
+    result = db.query(Cuscar).all()
+    df = pd.DataFrame(result)
+    df = pd.DataFrame(dict(df[0][0]))
+    return df
 
 def make_excel():
     data = {"Pruebita": "Hola", "Pruebita2": "Hola2"}
