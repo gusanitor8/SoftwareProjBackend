@@ -4,7 +4,8 @@ from fastapi.responses import JSONResponse
 from config.database import engine, Base, Session
 from typing import List
 from middlewares.error_handler import ErrorHandler
-from routers.excel import excel_router
+from routers.excelDB import excelDB_router
+from routers.views import views_router
 
 #pydantic
 from dataModels.Guia import GuiaBase as GuiaModel
@@ -22,22 +23,11 @@ from models.Remitente import Remitente
 app = FastAPI()
 app.title = "SoftAPI"
 app.add_middleware(ErrorHandler)
-app.include_router(excel_router)
+app.include_router(excelDB_router)
+app.include_router(views_router)
 
 Base.metadata.create_all(bind=engine)
 
 @app.get("/")
 def home():
     return {"Hello": "World"}
-
-
-@app.get("/database", tags = ["testing"], response_model=List[GuiaModel])
-def db():
-    db = Session()
-    result = db.query(Guia).all()
-    db.close()
-
-    if not result:
-        return JSONResponse({"message": "No guides found"}, status_code=404)
-
-    return JSONResponse(content=jsonable_encoder(result), status_code=201)
