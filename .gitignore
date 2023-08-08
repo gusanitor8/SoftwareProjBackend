@@ -7,3 +7,6 @@ env/*
 
 #environment variables 
 .env
+
+#vscode
+.vscode/settings.json
