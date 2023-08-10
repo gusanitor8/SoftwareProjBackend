@@ -11,4 +11,10 @@ def test_getCuscarView():
     print(result)
 
     assert result is not None
+
+
+def test_getAnicamViewSql():
+    result = getAnicamViewSql()
+    print(result)    
+    assert result is not None    
     
