@@ -184,7 +184,7 @@ def updateAnicamData(**kwargs):
             )
             session.add(new_destino)
             
-            new_paquete = Paquete(
+            new_paquete = Paquete.Paquete(
                 No_guia = kwargs.get("no_guia"),
                 contenido = kwargs.get("contenido"),
                 piezas = kwargs.get("piezas"),
@@ -208,8 +208,6 @@ def updateAnicamData(**kwargs):
         session.commit()
         return flag
 
-    except Exception as e:
-        return flag
 
     finally:
         session.close()
