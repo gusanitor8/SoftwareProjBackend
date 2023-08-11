@@ -19,7 +19,7 @@ async def create_upload_file(file: UploadFile = File(...)):
      
 @excelDB_router.get("/excel/anicam", tags = ["excelDB"])
 async def create_download_files():
-    result = getAnicamView()
+    result = getAnicamViewSql()
     df = dictListToDataframe(result)
     excel = createExcelFile(df)
 

@@ -21,7 +21,7 @@ from models.Remitente import Remitente
 
 
 app = FastAPI()
-app.title = "SoftAPI"
+app.title = "SLI Backend API"
 app.add_middleware(ErrorHandler)
 app.include_router(excelDB_router)
 app.include_router(views_router)

@@ -1,8 +1,7 @@
 from config.database import Session
 from sqlalchemy import text
 from datetime import date
-from models.Cuscar import Cuscar
-from models.Guia import Guia
+from models import Cuscar, Guia, Remitente, Destino, Paquete
 
 
 def custom_serializer(obj):
@@ -40,3 +39,193 @@ def getCuscarView():
         return query
     finally:
         session.close()
+
+def getAnicamViewSql():
+    session = Session()
+    query = session.query(
+        #tabla guia
+        Guia.Guia.no_guia,
+        Guia.Guia.fecha,
+
+        #tabla remitente
+        Remitente.Remitente.compania,
+        Remitente.Remitente.contacto,
+        Remitente.Remitente.email,
+        Remitente.Remitente.direccion,
+        Remitente.Remitente.codigo_postal,
+        Remitente.Remitente.ciudad,
+        Remitente.Remitente.estado,
+        Remitente.Remitente.pais,
+        Remitente.Remitente.telefono,
+
+        #tabla destino
+        Destino.Destino.nombre,
+        Destino.Destino.direccion,
+        Destino.Destino.codigo_postal,
+        Destino.Destino.ciudad,
+        Destino.Destino.estado,
+        Destino.Destino.pais,
+        Destino.Destino.telefono,
+
+        #tabla paquete
+        Paquete.Paquete.contenido,
+        Paquete.Paquete.piezas,
+        Paquete.Paquete.peso_libras,
+        Paquete.Paquete.peso_kilos,
+        Paquete.Paquete.valor_declarado,
+        Paquete.Paquete.news,
+        Paquete.Paquete.linea_de_negocio,
+        Paquete.Paquete.pre_alerta,
+        Paquete.Paquete.guia_externa,
+        Paquete.Paquete.precinto,
+        Paquete.Paquete.largo,
+        Paquete.Paquete.alto,
+        Paquete.Paquete.ancho,
+        Paquete.Paquete.carrier        
+    ).join(Remitente.Remitente, Guia.Guia.no_guia == Remitente.Remitente.No_guia).\
+        join(Destino.Destino, Guia.Guia.no_guia == Destino.Destino.No_guia).\
+        join(Paquete.Paquete, Guia.Guia.no_guia == Paquete.Paquete.No_guia)
+     
+    rows = query.all()
+
+    column_names = column_names = [desc['name'] for desc in query.column_descriptions]
+
+    result = jsonifyResponse(rows, column_names)
+    return result
+
+
+def updateAnicamData(**kwargs):
+    session = Session()
+    
+    try:
+        # Verificamos si la guía existe
+        guia_exists = session.query(Guia.Guia).filter(Guia.Guia.no_guia == kwargs.get("no_guia")).first()
+        
+        # Si la guía existe, hacemos los updates
+        if guia_exists:
+
+            # Actualizamos los datos de la guia
+            session.query(Guia.Guia).filter(Guia.Guia.no_guia == kwargs.get("no_guia")).update({
+                "fecha": kwargs.get("Fecha_guia")
+            })
+
+
+            # Actualizamos los datos del remitente
+            remitente_values = {
+                "compania": kwargs.get("REMITENTE_compania"),
+                "contacto": kwargs.get("REMITENTE_contacto"),
+                "email": kwargs.get("REMITENTE_email"),
+                "direccion": kwargs.get("REMITENTE_direccion"),
+                "codigo_postal": kwargs.get("REMITENTE_codigo_postal"),
+                "ciudad": kwargs.get("REMITENTE_ciudad"),
+                "estado": kwargs.get("REMITENTE_estado"),
+                "pais": kwargs.get("REMITENTE_pais"),
+                "telefono": kwargs.get("REMITENTE_telefono")
+            }
+            session.query(Remitente.Remitente).filter(Remitente.Remitente.No_guia == kwargs.get("no_guia")).update(remitente_values)
+
+
+            # Actualizamos los datos del destino
+            destino_values = {
+                "nombre": kwargs.get("DESTINO_nombre"),
+                "direccion": kwargs.get("DESTINO_direccion"),
+                "codigo_postal": kwargs.get("DESTINO_codigo_postal"),
+                "ciudad": kwargs.get("DESTINO_ciudad"),
+                "estado": kwargs.get("DESTINO_estado"),
+                "pais": kwargs.get("DESTINO_pais"),
+                "telefono": kwargs.get("DESTINO_telefono")
+            }
+            session.query(Destino.Destino).filter(Destino.Destino.No_guia == kwargs.get("no_guia")).update(destino_values)
+
+
+            # Actualizamos los datos del paquete
+            paquete_values = {
+                "contenido": kwargs.get("contenido"),
+                "piezas": kwargs.get("piezas"),
+                "peso_libras": kwargs.get("peso_libras"),
+                "peso_kilos": kwargs.get("peso_kilos"),
+                "valor_declarado": kwargs.get("valor_declarado"),
+                "news": kwargs.get("news"),
+                "linea_de_negocio": kwargs.get("linea_de_negocio"),
+                "pre_alerta": kwargs.get("pre_alerta"),
+                "guia_externa": kwargs.get("guia_externa"),
+                "precinto": kwargs.get("precinto"),
+                "largo": kwargs.get("largo"),
+                "alto": kwargs.get("alto"),
+                "ancho": kwargs.get("ancho"),
+                "carrier": kwargs.get("carrier")
+            }
+            session.query(Paquete.Paquete).filter(Paquete.Paquete.No_guia == kwargs.get("no_guia")).update(paquete_values)
+
+
+        # Si la guía no existe, hacemos los inserts   
+        else:
+            
+            # Creamos un nuevo resgistro para Guia
+            new_guia = Guia.Guia(
+                no_guia = kwargs.get("no_guia"),
+                fecha = kwargs.get("Fecha_guia")
+            )
+            session.add(new_guia)
+            
+
+            # Creamos un nuevo registro para Remitente
+            new_remitente = Remitente.Remitente(
+                No_guia = kwargs.get("no_guia"),
+                compania = kwargs.get("REMITENTE_compania"),
+                contacto = kwargs.get("REMITENTE_contacto"),
+                email = kwargs.get("REMITENTE_email"),
+                direccion = kwargs.get("REMITENTE_direccion"),
+                codigo_postal = kwargs.get("REMITENTE_codigo_postal"),
+                ciudad = kwargs.get("REMITENTE_ciudad"),
+                estado = kwargs.get("REMITENTE_estado"),
+                pais = kwargs.get("REMITENTE_pais"),
+                telefono = kwargs.get("REMITENTE_telefono")
+                
+            )
+            session.add(new_remitente)
+            
+
+            # Creamos un nuevo registro para Destino
+            new_destino = Destino.Destino(
+                No_guia = kwargs.get("no_guia"),
+                nombre = kwargs.get("DESTINO_nombre"),
+                direccion = kwargs.get("DESTINO_direccion"),
+                codigo_postal = kwargs.get("DESTINO_codigo_postal"),
+                ciudad = kwargs.get("DESTINO_ciudad"),
+                estado = kwargs.get("DESTINO_estado"),
+                pais = kwargs.get("DESTINO_pais"),
+                telefono = kwargs.get("DESTINO_telefono")
+            )
+            session.add(new_destino)
+            
+
+            # Creamos un nuevo registro para Paquete
+            new_paquete = Paquete.Paquete(
+                No_guia = kwargs.get("no_guia"),
+                contenido = kwargs.get("contenido"),
+                piezas = kwargs.get("piezas"),
+                peso_libras = kwargs.get("peso_libras"),
+                peso_kilos = kwargs.get("peso_kilos"),
+                valor_declarado = kwargs.get("valor_declarado"),
+                news = kwargs.get("news"),
+                linea_de_negocio = kwargs.get("linea_de_negocio"),
+                pre_alerta = kwargs.get("pre_alerta"),
+                guia_externa = kwargs.get("guia_externa"),
+                precinto = kwargs.get("precinto"),
+                largo = kwargs.get("largo"),
+                alto = kwargs.get("alto"),
+                ancho = kwargs.get("ancho"),
+                carrier = kwargs.get("carrier")
+            )
+            session.add(new_paquete)
+            
+
+        # Guardamos los cambios hechos en la base de datos
+        session.commit()        
+
+
+    finally:
+        session.close()
+        
+    return True

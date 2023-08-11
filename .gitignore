@@ -8,5 +8,6 @@ env/*
 #environment variables 
 .env
 
-#testing
-testing/
+#vscode
+.vscode/
+.vs/
