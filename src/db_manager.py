@@ -96,6 +96,7 @@ def getAnicamViewSql():
 
 def updateAnicamData(**kwargs):
     session = Session()
+    flag = False
     try:
         # Verificamos si la guía existe
         guia = session.query(Guia.Guia).filter(Guia.Guia.no_guia == kwargs.get("no_guia")).first()
@@ -106,47 +107,46 @@ def updateAnicamData(**kwargs):
             guia.fecha = kwargs.get("Fecha_guia", guia.fecha)
             
             remitente = session.query(Remitente.Remitente).filter(Remitente.Remitente.No_guia == kwargs.get("no_guia")).first()
-            if remitente:
-                # Actualizamos los datos del remitente
-                remitente.compania = kwargs.get("REMITENTE_compania", remitente.compania)
-                remitente.contacto = kwargs.get("REMITENTE_contacto", remitente.contacto)
-                remitente.email = kwargs.get("REMITENTE_email", remitente.email)
-                remitente.direccion = kwargs.get("REMITENTE_direccion", remitente.direccion)
-                remitente.codigo_postal = kwargs.get("REMITENTE_codigo_postal", remitente.codigo_postal)
-                remitente.ciudad = kwargs.get("REMITENTE_ciudad", remitente.ciudad)
-                remitente.estado = kwargs.get("REMITENTE_estado", remitente.estado)
-                remitente.pais = kwargs.get("REMITENTE_pais", remitente.pais)
-                remitente.telefono = kwargs.get("REMITENTE_telefono", remitente.telefono)
+            # Actualizamos los datos del remitente
+            remitente.compania = kwargs.get("REMITENTE_compania", remitente.compania)
+            remitente.contacto = kwargs.get("REMITENTE_contacto", remitente.contacto)
+            remitente.email = kwargs.get("REMITENTE_email", remitente.email)
+            remitente.direccion = kwargs.get("REMITENTE_direccion", remitente.direccion)
+            remitente.codigo_postal = kwargs.get("REMITENTE_codigo_postal", remitente.codigo_postal)
+            remitente.ciudad = kwargs.get("REMITENTE_ciudad", remitente.ciudad)
+            remitente.estado = kwargs.get("REMITENTE_estado", remitente.estado)
+            remitente.pais = kwargs.get("REMITENTE_pais", remitente.pais)
+            remitente.telefono = kwargs.get("REMITENTE_telefono", remitente.telefono)
 
                 
             destino = session.query(Destino.Destino).filter(Destino.Destino.No_guia == kwargs.get("no_guia")).first()
-            if destino:
-                # Actualizamos los datos del destino
-                destino.nombre = kwargs.get("DESTINO_nombre", destino.nombre)
-                destino.direccion = kwargs.get("DESTINO_direccion", destino.direccion)
-                destino.codigo_postal = kwargs.get("DESTINO_codigo_postal", destino.codigo_postal)
-                destino.ciudad = kwargs.get("DESTINO_ciudad", destino.ciudad)
-                destino.estado = kwargs.get("DESTINO_estado", destino.estado)
-                destino.pais = kwargs.get("DESTINO_pais", destino.pais)
-                destino.telefono = kwargs.get("DESTINO_telefono", destino.telefono)
+            # Actualizamos los datos del destino
+            destino.nombre = kwargs.get("DESTINO_nombre", destino.nombre)
+            destino.direccion = kwargs.get("DESTINO_direccion", destino.direccion)
+            destino.codigo_postal = kwargs.get("DESTINO_codigo_postal", destino.codigo_postal)
+            destino.ciudad = kwargs.get("DESTINO_ciudad", destino.ciudad)
+            destino.estado = kwargs.get("DESTINO_estado", destino.estado)
+            destino.pais = kwargs.get("DESTINO_pais", destino.pais)
+            destino.telefono = kwargs.get("DESTINO_telefono", destino.telefono)
                 
             paquete = session.query(Paquete.Paquete).filter(Paquete.Paquete.No_guia == kwargs.get("no_guia")).first()
-            if paquete:
-                # Actualizamos los datos del paquete
-                paquete.contenido = kwargs.get("contenido", paquete.contenido)
-                paquete.piezas = kwargs.get("piezas", paquete.piezas)
-                paquete.peso_libras = kwargs.get("peso_libras", paquete.peso_libras)
-                paquete.peso_kilos = kwargs.get("peso_kilos", paquete.peso_kilos)
-                paquete.valor_declarado = kwargs.get("valor_declarado", paquete.valor_declarado)
-                paquete.news = kwargs.get("news", paquete.news)
-                paquete.linea_de_negocio = kwargs.get("linea_de_negocio", paquete.linea_de_negocio)
-                paquete.pre_alerta = kwargs.get("pre_alerta", paquete.pre_alerta)
-                paquete.guia_externa = kwargs.get("guia_externa", paquete.guia_externa)
-                paquete.precinto = kwargs.get("precinto", paquete.precinto)
-                paquete.largo = kwargs.get("largo", paquete.largo)
-                paquete.alto = kwargs.get("alto", paquete.alto)
-                paquete.ancho = kwargs.get("ancho", paquete.ancho)
-                paquete.carrier = kwargs.get("carrier", paquete.carrier)
+            # Actualizamos los datos del paquete
+            paquete.contenido = kwargs.get("contenido", paquete.contenido)
+            paquete.piezas = kwargs.get("piezas", paquete.piezas)
+            paquete.peso_libras = kwargs.get("peso_libras", paquete.peso_libras)
+            paquete.peso_kilos = kwargs.get("peso_kilos", paquete.peso_kilos)
+            paquete.valor_declarado = kwargs.get("valor_declarado", paquete.valor_declarado)
+            paquete.news = kwargs.get("news", paquete.news)
+            paquete.linea_de_negocio = kwargs.get("linea_de_negocio", paquete.linea_de_negocio)
+            paquete.pre_alerta = kwargs.get("pre_alerta", paquete.pre_alerta)
+            paquete.guia_externa = kwargs.get("guia_externa", paquete.guia_externa)
+            paquete.precinto = kwargs.get("precinto", paquete.precinto)
+            paquete.largo = kwargs.get("largo", paquete.largo)
+            paquete.alto = kwargs.get("alto", paquete.alto)
+            paquete.ancho = kwargs.get("ancho", paquete.ancho)
+            paquete.carrier = kwargs.get("carrier", paquete.carrier)
+
+            flag = True
 
                 
         else:
@@ -203,11 +203,13 @@ def updateAnicamData(**kwargs):
             )
             session.add(new_paquete)
             
+            flag = True
+
         session.commit()
-        return True
+        return flag
 
     except Exception as e:
-        return False
+        return flag
 
     finally:
         session.close()
