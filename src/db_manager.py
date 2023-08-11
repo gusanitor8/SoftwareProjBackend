@@ -96,67 +96,80 @@ def getAnicamViewSql():
 
 def updateAnicamData(**kwargs):
     session = Session()
-    flag = False
+    
     try:
         # Verificamos si la guía existe
-        guia = session.query(Guia.Guia).filter(Guia.Guia.no_guia == kwargs.get("no_guia")).first()
+        guia_exists = session.query(Guia.Guia).filter(Guia.Guia.no_guia == kwargs.get("no_guia")).first()
         
         # Si la guía existe, hacemos los updates
-        if guia:
+        if guia_exists:
+
             # Actualizamos los datos de la guia
-            guia.fecha = kwargs.get("Fecha_guia", guia.fecha)
-            
-            remitente = session.query(Remitente.Remitente).filter(Remitente.Remitente.No_guia == kwargs.get("no_guia")).first()
+            session.query(Guia.Guia).filter(Guia.Guia.no_guia == kwargs.get("no_guia")).update({
+                "fecha": kwargs.get("Fecha_guia")
+            })
+
+
             # Actualizamos los datos del remitente
-            remitente.compania = kwargs.get("REMITENTE_compania", remitente.compania)
-            remitente.contacto = kwargs.get("REMITENTE_contacto", remitente.contacto)
-            remitente.email = kwargs.get("REMITENTE_email", remitente.email)
-            remitente.direccion = kwargs.get("REMITENTE_direccion", remitente.direccion)
-            remitente.codigo_postal = kwargs.get("REMITENTE_codigo_postal", remitente.codigo_postal)
-            remitente.ciudad = kwargs.get("REMITENTE_ciudad", remitente.ciudad)
-            remitente.estado = kwargs.get("REMITENTE_estado", remitente.estado)
-            remitente.pais = kwargs.get("REMITENTE_pais", remitente.pais)
-            remitente.telefono = kwargs.get("REMITENTE_telefono", remitente.telefono)
+            remitente_values = {
+                "compania": kwargs.get("REMITENTE_compania"),
+                "contacto": kwargs.get("REMITENTE_contacto"),
+                "email": kwargs.get("REMITENTE_email"),
+                "direccion": kwargs.get("REMITENTE_direccion"),
+                "codigo_postal": kwargs.get("REMITENTE_codigo_postal"),
+                "ciudad": kwargs.get("REMITENTE_ciudad"),
+                "estado": kwargs.get("REMITENTE_estado"),
+                "pais": kwargs.get("REMITENTE_pais"),
+                "telefono": kwargs.get("REMITENTE_telefono")
+            }
+            session.query(Remitente.Remitente).filter(Remitente.Remitente.No_guia == kwargs.get("no_guia")).update(remitente_values)
 
-                
-            destino = session.query(Destino.Destino).filter(Destino.Destino.No_guia == kwargs.get("no_guia")).first()
+
             # Actualizamos los datos del destino
-            destino.nombre = kwargs.get("DESTINO_nombre", destino.nombre)
-            destino.direccion = kwargs.get("DESTINO_direccion", destino.direccion)
-            destino.codigo_postal = kwargs.get("DESTINO_codigo_postal", destino.codigo_postal)
-            destino.ciudad = kwargs.get("DESTINO_ciudad", destino.ciudad)
-            destino.estado = kwargs.get("DESTINO_estado", destino.estado)
-            destino.pais = kwargs.get("DESTINO_pais", destino.pais)
-            destino.telefono = kwargs.get("DESTINO_telefono", destino.telefono)
-                
-            paquete = session.query(Paquete.Paquete).filter(Paquete.Paquete.No_guia == kwargs.get("no_guia")).first()
+            destino_values = {
+                "nombre": kwargs.get("DESTINO_nombre"),
+                "direccion": kwargs.get("DESTINO_direccion"),
+                "codigo_postal": kwargs.get("DESTINO_codigo_postal"),
+                "ciudad": kwargs.get("DESTINO_ciudad"),
+                "estado": kwargs.get("DESTINO_estado"),
+                "pais": kwargs.get("DESTINO_pais"),
+                "telefono": kwargs.get("DESTINO_telefono")
+            }
+            session.query(Destino.Destino).filter(Destino.Destino.No_guia == kwargs.get("no_guia")).update(destino_values)
+
+
             # Actualizamos los datos del paquete
-            paquete.contenido = kwargs.get("contenido", paquete.contenido)
-            paquete.piezas = kwargs.get("piezas", paquete.piezas)
-            paquete.peso_libras = kwargs.get("peso_libras", paquete.peso_libras)
-            paquete.peso_kilos = kwargs.get("peso_kilos", paquete.peso_kilos)
-            paquete.valor_declarado = kwargs.get("valor_declarado", paquete.valor_declarado)
-            paquete.news = kwargs.get("news", paquete.news)
-            paquete.linea_de_negocio = kwargs.get("linea_de_negocio", paquete.linea_de_negocio)
-            paquete.pre_alerta = kwargs.get("pre_alerta", paquete.pre_alerta)
-            paquete.guia_externa = kwargs.get("guia_externa", paquete.guia_externa)
-            paquete.precinto = kwargs.get("precinto", paquete.precinto)
-            paquete.largo = kwargs.get("largo", paquete.largo)
-            paquete.alto = kwargs.get("alto", paquete.alto)
-            paquete.ancho = kwargs.get("ancho", paquete.ancho)
-            paquete.carrier = kwargs.get("carrier", paquete.carrier)
+            paquete_values = {
+                "contenido": kwargs.get("contenido"),
+                "piezas": kwargs.get("piezas"),
+                "peso_libras": kwargs.get("peso_libras"),
+                "peso_kilos": kwargs.get("peso_kilos"),
+                "valor_declarado": kwargs.get("valor_declarado"),
+                "news": kwargs.get("news"),
+                "linea_de_negocio": kwargs.get("linea_de_negocio"),
+                "pre_alerta": kwargs.get("pre_alerta"),
+                "guia_externa": kwargs.get("guia_externa"),
+                "precinto": kwargs.get("precinto"),
+                "largo": kwargs.get("largo"),
+                "alto": kwargs.get("alto"),
+                "ancho": kwargs.get("ancho"),
+                "carrier": kwargs.get("carrier")
+            }
+            session.query(Paquete.Paquete).filter(Paquete.Paquete.No_guia == kwargs.get("no_guia")).update(paquete_values)
 
-            flag = True
 
-                
+        # Si la guía no existe, hacemos los inserts   
         else:
-            # Si la guía no existe, hacemos los inserts
+            
+            # Creamos un nuevo resgistro para Guia
             new_guia = Guia.Guia(
                 no_guia = kwargs.get("no_guia"),
                 fecha = kwargs.get("Fecha_guia")
             )
             session.add(new_guia)
             
+
+            # Creamos un nuevo registro para Remitente
             new_remitente = Remitente.Remitente(
                 No_guia = kwargs.get("no_guia"),
                 compania = kwargs.get("REMITENTE_compania"),
@@ -172,6 +185,8 @@ def updateAnicamData(**kwargs):
             )
             session.add(new_remitente)
             
+
+            # Creamos un nuevo registro para Destino
             new_destino = Destino.Destino(
                 No_guia = kwargs.get("no_guia"),
                 nombre = kwargs.get("DESTINO_nombre"),
@@ -184,6 +199,8 @@ def updateAnicamData(**kwargs):
             )
             session.add(new_destino)
             
+
+            # Creamos un nuevo registro para Paquete
             new_paquete = Paquete.Paquete(
                 No_guia = kwargs.get("no_guia"),
                 contenido = kwargs.get("contenido"),
@@ -203,10 +220,9 @@ def updateAnicamData(**kwargs):
             )
             session.add(new_paquete)
             
-            flag = True
 
+        # Guardamos los cambios hechos en la base de datos
         session.commit()
-        return flag
 
 
     finally:
