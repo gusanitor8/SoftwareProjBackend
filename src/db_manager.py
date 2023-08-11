@@ -98,15 +98,12 @@ def getAnicamViewSql():
 def update_all_records(session, **kwargs):
     
     # Actualizamos los datos de la guia
-    fecha_guia = kwargs.get("Fecha_guia")
-    if fecha_guia is not None and fecha_guia != "":
-        session.query(Guia.Guia).filter(Guia.Guia.no_guia == kwargs.get("no_guia")).update({
-            "fecha": kwargs.get("Fecha_guia")
+    session.query(Guia.Guia).filter(Guia.Guia.no_guia == kwargs.get("no_guia")).update({
+        "fecha": kwargs.get("Fecha_guia")
         })
 
     # Actualizamos los datos del remitente
     remitente_values = {
-        key: value for key, value in{
         "compania": kwargs.get("REMITENTE_compania"),
         "contacto": kwargs.get("REMITENTE_contacto"),
         "email": kwargs.get("REMITENTE_email"),
@@ -116,14 +113,12 @@ def update_all_records(session, **kwargs):
         "estado": kwargs.get("REMITENTE_estado"),
         "pais": kwargs.get("REMITENTE_pais"),
         "telefono": kwargs.get("REMITENTE_telefono")
-    }.items() if value is not None and value != ""
     }
     session.query(Remitente.Remitente).filter(Remitente.Remitente.No_guia == kwargs.get("no_guia")).update(remitente_values)
 
 
     # Actualizamos los datos del destino
     destino_values = {
-        key: value for key, value in{
         "nombre": kwargs.get("DESTINO_nombre"),
         "direccion": kwargs.get("DESTINO_direccion"),
         "codigo_postal": kwargs.get("DESTINO_codigo_postal"),
@@ -131,14 +126,12 @@ def update_all_records(session, **kwargs):
         "estado": kwargs.get("DESTINO_estado"),
         "pais": kwargs.get("DESTINO_pais"),
         "telefono": kwargs.get("DESTINO_telefono")
-    }.items() if value is not None and value != ""
     }
     session.query(Destino.Destino).filter(Destino.Destino.No_guia == kwargs.get("no_guia")).update(destino_values)
 
 
     # Actualizamos los datos del paquete
     paquete_values = {
-        key: value for key, value in{
         "contenido": kwargs.get("contenido"),
         "piezas": kwargs.get("piezas"),
         "peso_libras": kwargs.get("peso_libras"),
@@ -148,12 +141,11 @@ def update_all_records(session, **kwargs):
         "linea_de_negocio": kwargs.get("linea_de_negocio"),
         "pre_alerta": kwargs.get("pre_alerta"),
         "guia_externa": kwargs.get("guia_externa"),
-        "precinto": kwargs.get("precinto"), 
+        "precinto": kwargs.get("precinto"),
         "largo": kwargs.get("largo"),
         "alto": kwargs.get("alto"),
         "ancho": kwargs.get("ancho"),
         "carrier": kwargs.get("carrier")
-    }.items() if value is not None and value != ""
     }
     session.query(Paquete.Paquete).filter(Paquete.Paquete.No_guia == kwargs.get("no_guia")).update(paquete_values)
 
