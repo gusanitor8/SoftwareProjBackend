@@ -222,8 +222,10 @@ def updateAnicamData(**kwargs):
             
 
         # Guardamos los cambios hechos en la base de datos
-        session.commit()
+        session.commit()        
 
 
     finally:
         session.close()
+        
+    return True
