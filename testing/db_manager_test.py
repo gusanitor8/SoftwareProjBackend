@@ -21,7 +21,7 @@ def test_getAnicamViewSql():
 
 def test_updateAnicamData():
     register = {
-        "no_guia": 2881995,
+        "no_guia": 888,
         "Fecha_guia": "2023-07-21",
         "REMITENTE_compania": "jsddasd",
         "REMITENTE_contacto": "sadasd",

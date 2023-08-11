@@ -35,7 +35,7 @@ def getAnicamView():
 def getCuscarView():
     try:
         session = Session()
-        query = session.query(Cuscar).all()
+        query = session.query(Cuscar.Cuscar).all()
         return query
     finally:
         session.close()
@@ -233,6 +233,8 @@ def updateAnicamData(**kwargs):
 
         # Guardamos los cambios hechos en la base de datos
         session.commit()
+        return True
+
 
     finally:
         session.close()
