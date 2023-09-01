@@ -12,11 +12,8 @@ excelDB_router = APIRouter()
 async def create_upload_file(file: UploadFile = File(...)):
     if file.filename.endswith(".xlsx"):
         contents = await file.read()
-        dictionaryList = excelToDictList(contents)
-        for dic in dictionaryList:
-            updateAnicamData(**dic)
-            
-        return JSONResponse(content=jsonable_encoder({"message": "success"}), status_code=201)
+        dictList = excelToDictList(contents)
+        return JSONResponse(content=jsonable_encoder(dictList), status_code=201)
     else:
         return JSONResponse({"message": "Invalid file format"}, status_code=400)
      
@@ -26,7 +23,5 @@ async def create_download_files():
     df = dictListToDataframe(result)
     excel = createExcelFile(df)
 
-    return StreamingResponse(io.BytesIO(excel),
-                              media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", 
-                              headers={"Content-Disposition": "attachment; filename=prueba.xlsx"})
+    return StreamingResponse(io.BytesIO(excel), media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", headers={"Content-Disposition": "attachment; filename=prueba.xlsx"})
 
