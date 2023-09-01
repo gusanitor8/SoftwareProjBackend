@@ -16,3 +16,4 @@ class Destino(Base):
     DESTINO_telefono = Column(BigInteger)
 
     guia = relationship("Guia")
+    

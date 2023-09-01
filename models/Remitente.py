@@ -18,3 +18,4 @@ class Remitente(Base):
     REMITENTE_telefono = Column(BigInteger)
 
     guia = relationship("Guia")
+
