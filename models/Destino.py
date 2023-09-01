@@ -7,13 +7,13 @@ class Destino(Base):
 
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     No_guia = Column(BigInteger, ForeignKey('Guia.no_guia'))
-    nombre = Column(String)
-    direccion = Column(String)
-    codigo_postal = Column(BigInteger)
-    ciudad = Column(String)
-    estado = Column(String)
-    pais = Column(String)
-    telefono = Column(BigInteger)
+    DESTINO_nombre = Column(String)
+    DESTINO_direccion = Column(String)
+    DESTINO_codigo_postal = Column(BigInteger)
+    DESTINO_ciudad = Column(String)
+    DESTINO_estado = Column(String)
+    DESTINO_pais = Column(String)
+    DESTINO_telefono = Column(BigInteger)
 
     guia = relationship("Guia")
     
