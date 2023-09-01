@@ -6,6 +6,15 @@ from routers.views import views_router
 from middlewares.cors_middleware import getOrigins
 from fastapi.middleware.cors import CORSMiddleware
 
+#ORM
+from models.Guia import Guia
+from models.Cuscar import Cuscar
+from models.Destino import Destino
+from models.Facturacion import Facturacion
+from models.Oea import OEA
+from models.Paquete import Paquete
+from models.Remitente import Remitente
+
 
 app = FastAPI()
 app.title = "SLI Backend API"
