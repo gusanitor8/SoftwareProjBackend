@@ -112,28 +112,28 @@ def updateAnicamData(**kwargs):
 
             # Actualizamos los datos del remitente
             remitente_values = {
-                "compania": kwargs.get("REMITENTE_compania"),
-                "contacto": kwargs.get("REMITENTE_contacto"),
-                "email": kwargs.get("REMITENTE_email"),
-                "direccion": kwargs.get("REMITENTE_direccion"),
-                "codigo_postal": kwargs.get("REMITENTE_codigo_postal"),
-                "ciudad": kwargs.get("REMITENTE_ciudad"),
-                "estado": kwargs.get("REMITENTE_estado"),
-                "pais": kwargs.get("REMITENTE_pais"),
-                "telefono": kwargs.get("REMITENTE_telefono")
+                "REMITENTE_compania": kwargs.get("REMITENTE_compania"),
+                "REMITENTE_contacto": kwargs.get("REMITENTE_contacto"),
+                "REMITENTE_email": kwargs.get("REMITENTE_email"),
+                "REMITENTE_direccion": kwargs.get("REMITENTE_direccion"),
+                "REMITENTE_codigo_postal": kwargs.get("REMITENTE_codigo_postal"),
+                "REMITENTE_ciudad": kwargs.get("REMITENTE_ciudad"),
+                "REMITENTE_estado": kwargs.get("REMITENTE_estado"),
+                "REMITENTE_pais": kwargs.get("REMITENTE_pais"),
+                "REMITENTE_telefono": kwargs.get("REMITENTE_telefono")
             }
             session.query(Remitente.Remitente).filter(Remitente.Remitente.No_guia == kwargs.get("no_guia")).update(remitente_values)
 
 
             # Actualizamos los datos del destino
             destino_values = {
-                "nombre": kwargs.get("DESTINO_nombre"),
-                "direccion": kwargs.get("DESTINO_direccion"),
-                "codigo_postal": kwargs.get("DESTINO_codigo_postal"),
-                "ciudad": kwargs.get("DESTINO_ciudad"),
-                "estado": kwargs.get("DESTINO_estado"),
-                "pais": kwargs.get("DESTINO_pais"),
-                "telefono": kwargs.get("DESTINO_telefono")
+                "DESTINO_nombre": kwargs.get("DESTINO_nombre"),
+                "DESTINO_direccion": kwargs.get("DESTINO_direccion"),
+                "DESTINO_codigo_postal": kwargs.get("DESTINO_codigo_postal"),
+                "DESTINO_ciudad": kwargs.get("DESTINO_ciudad"),
+                "DESTINO_estado": kwargs.get("DESTINO_estado"),
+                "DESTINO_pais": kwargs.get("DESTINO_pais"),
+                "DESTINO_telefono": kwargs.get("DESTINO_telefono")
             }
             session.query(Destino.Destino).filter(Destino.Destino.No_guia == kwargs.get("no_guia")).update(destino_values)
 
@@ -172,15 +172,15 @@ def updateAnicamData(**kwargs):
             # Creamos un nuevo registro para Remitente
             new_remitente = Remitente.Remitente(
                 No_guia = kwargs.get("no_guia"),
-                compania = kwargs.get("REMITENTE_compania"),
-                contacto = kwargs.get("REMITENTE_contacto"),
-                email = kwargs.get("REMITENTE_email"),
-                direccion = kwargs.get("REMITENTE_direccion"),
-                codigo_postal = kwargs.get("REMITENTE_codigo_postal"),
-                ciudad = kwargs.get("REMITENTE_ciudad"),
-                estado = kwargs.get("REMITENTE_estado"),
-                pais = kwargs.get("REMITENTE_pais"),
-                telefono = kwargs.get("REMITENTE_telefono")
+                REMITENTE_compania = kwargs.get("REMITENTE_compania"),
+                REMITENTE_contacto = kwargs.get("REMITENTE_contacto"),
+                REMITENTE_email = kwargs.get("REMITENTE_email"),
+                REMITENTE_direccion = kwargs.get("REMITENTE_direccion"),
+                REMITENTE_codigo_postal = kwargs.get("REMITENTE_codigo_postal"),
+                REMITENTE_ciudad = kwargs.get("REMITENTE_ciudad"),
+                REMITENTE_estado = kwargs.get("REMITENTE_estado"),
+                REMITENTE_pais = kwargs.get("REMITENTE_pais"),
+                REMITENTE_telefono = kwargs.get("REMITENTE_telefono")
                 
             )
             session.add(new_remitente)
@@ -189,13 +189,13 @@ def updateAnicamData(**kwargs):
             # Creamos un nuevo registro para Destino
             new_destino = Destino.Destino(
                 No_guia = kwargs.get("no_guia"),
-                nombre = kwargs.get("DESTINO_nombre"),
-                direccion = kwargs.get("DESTINO_direccion"),
-                codigo_postal = kwargs.get("DESTINO_codigo_postal"),
-                ciudad = kwargs.get("DESTINO_ciudad"),
-                estado = kwargs.get("DESTINO_estado"),
-                pais = kwargs.get("DESTINO_pais"),
-                telefono = kwargs.get("DESTINO_telefono")
+                DESTINO_nombre = kwargs.get("DESTINO_nombre"),
+                DESTINO_direccion = kwargs.get("DESTINO_direccion"),
+                DESTINO_codigo_postal = kwargs.get("DESTINO_codigo_postal"),
+                DESTINO_ciudad = kwargs.get("DESTINO_ciudad"),
+                DESTINO_estado = kwargs.get("DESTINO_estado"),
+                DESTINO_pais = kwargs.get("DESTINO_pais"),
+                DESTINO_telefono = kwargs.get("DESTINO_telefono")
             )
             session.add(new_destino)
             

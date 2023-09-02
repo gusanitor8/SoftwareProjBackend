@@ -4,6 +4,8 @@ from fastapi.responses import JSONResponse, StreamingResponse
 import io
 from src.data_manipulation import *
 from src.db_manager import *
+from dataModels.AnicamView import AnicamView
+from typing import List
 
 excelDB_router = APIRouter()
 
@@ -13,6 +15,10 @@ async def create_upload_file(file: UploadFile = File(...)):
     if file.filename.endswith(".xlsx"):
         contents = await file.read()
         dictList = excelToDictList(contents)
+        
+        for dict in dictList:
+            updateAnicamData(**dict)
+
         return JSONResponse(content=jsonable_encoder(dictList), status_code=201)
     else:
         return JSONResponse({"message": "Invalid file format"}, status_code=400)
