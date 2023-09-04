@@ -225,10 +225,6 @@ def updateAnicamData(**kwargs):
         session.commit()
         return True
 
-<<<<<<< HEAD
-
-=======
->>>>>>> DBDevelopmentOps
 
     finally:
         session.close()
