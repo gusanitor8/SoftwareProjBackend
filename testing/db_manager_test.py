@@ -18,7 +18,11 @@ def test_getAnicamViewSql():
     print(result)    
     assert result is not None    
     
-
+def test_getFinancesViewSql():
+    result = getFinancesViewSql()
+    print(result)
+    assert result is not None
+    
 def test_updateAnicamData():
     register = {
         "no_guia": 888,
@@ -58,3 +62,5 @@ def test_updateAnicamData():
     result = updateAnicamData(**register)
     print(result)    
     assert result is True
+
+
