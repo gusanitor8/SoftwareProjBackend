@@ -1,7 +1,7 @@
 from config.database import Session
 from sqlalchemy import text
 from datetime import date
-from models import Cuscar, Guia, Remitente, Destino, Paquete
+from models import Cuscar, Guia, Remitente, Destino, Paquete, Oea, Costeo
 
 
 def custom_serializer(obj):
@@ -35,7 +35,7 @@ def getAnicamView():
 def getCuscarView():
     try:
         session = Session()
-        query = session.query(Cuscar).all()
+        query = session.query(Cuscar.Cuscar).all()
         return query
     finally:
         session.close()
@@ -232,8 +232,52 @@ def updateAnicamData(**kwargs):
             insert_new_records(session, **kwargs)
 
         # Guardamos los cambios hechos en la base de datos
-        session.commit()        
+        session.commit()
+        return True
 
+
+    finally:
+        session.close()
+        
+
+def getFinancesViewSql():
+    try:
+        session = Session()
+        query = session.query(
+            # Tabla Guia
+            Guia.Guia.no_guia.label("No_guia"),
+
+            # Tabla Costeo
+            Costeo.Costeo.codigo,
+            Costeo.Costeo.courier,
+            Costeo.Costeo.correlativo,
+            Costeo.Costeo.consignatario,
+            Costeo.Costeo.libras_a_facturar,
+            Costeo.Costeo.peso_real_lb,
+            Costeo.Costeo.peso_vol_lb,
+            Costeo.Costeo.descripcion_costeo,
+            Costeo.Costeo.cobro_flete,
+            Costeo.Costeo.ultima_milla,
+            Costeo.Costeo.gestion_aduana,
+            Costeo.Costeo.manejo_almacenaje,
+            Costeo.Costeo.descuentos,
+            Costeo.Costeo.DAI,
+            Costeo.Costeo.IVA,
+
+            # Tabla OEA
+            Oea.OEA.Numero_de_Declaracion,
+            Oea.OEA.Declaracion,
+            Oea.OEA.Selectivo
+        ).join(Costeo.Costeo, Guia.Guia.no_guia == Costeo.Costeo.No_guia).\
+            join(Oea.OEA, Guia.Guia.no_guia == Oea.OEA.No_guia)
+        
+        rows = query.all()
+
+        column_names = [desc['name'] for desc in query.column_descriptions]
+
+        result = jsonifyResponse(rows, column_names)
+        return result
+    
     finally:
         session.close()
         
