@@ -2,6 +2,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from fastapi import FastAPI, Request, Response
 from fastapi.responses import JSONResponse
 from typing import Tuple
+import traceback
 
 class ErrorHandler(BaseHTTPMiddleware):
     def __init__(self, app: FastAPI) -> None:
@@ -11,4 +12,5 @@ class ErrorHandler(BaseHTTPMiddleware):
         try:
             return await call_next(request)
         except Exception as e:
-            return JSONResponse({"message": str(e)}, status_code=500)
+            traceback_str = traceback.format_exc()
+            return JSONResponse({"message": str(e), "traceback": traceback_str}, status_code=500)

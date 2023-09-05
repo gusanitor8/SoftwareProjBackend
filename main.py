@@ -3,6 +3,7 @@ from config.database import engine, Base
 from middlewares.error_handler import ErrorHandler
 from routers.excelDB import excelDB_router
 from routers.views import views_router
+from routers.auth import auth_router
 from middlewares.cors_middleware import getOrigins
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -34,6 +35,7 @@ app.add_middleware(ErrorHandler)
 #Routers
 app.include_router(excelDB_router)
 app.include_router(views_router)
+app.include_router(auth_router)
 
 #Database
 Base.metadata.create_all(bind=engine)

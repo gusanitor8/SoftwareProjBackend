@@ -5,10 +5,10 @@ class Users(Base):
     __tablename__ = 'users'
 
     user_id = Column(BigInteger, primary_key=True, autoincrement=True)
-    email = Column(String, unique=True)
-    password = Column(String)
-    salt = Column(String)
-    role = Column(String)
+    email = Column(String, unique=True, not_null=True)
+    password = Column(String, not_null=True)
+    salt = Column(String, not_null=True)
+    role = Column(String, not_null=True)
 
     # Create an index on the primary key (user_id)
     __table_args__ = (
