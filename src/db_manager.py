@@ -3,6 +3,22 @@ from sqlalchemy import text
 from datetime import date
 from models import Cuscar, Guia, Remitente, Destino, Paquete, Oea, Costeo
 
+def convert_and_format_date(date_str):
+    # Manejo de nulos
+    if date_str is None:
+        return None
+    
+    # Reemplazar '/' con '-' para manejar ambos formatos
+    date_str = date_str.replace('/', '-')
+    
+    # Convertir la cadena a un objeto de fecha
+    date_obj = date.strptime(date_str, '%d-%m-%Y').date()
+    
+    # Formatear el objeto de fecha al formato deseado (en este caso, dd-mm-yyyy)
+    formatted_date = date_obj.strftime('%d/%m/%Y')
+    
+    return formatted_date
+
 
 def custom_serializer(obj):
     if isinstance(obj, date):
@@ -226,13 +242,18 @@ def updateAnicamData(**kwargs):
         return True
 
 
+
     finally:
         session.close()
+        
+    return True
+
         
 
 def getFinancesViewSql():
     try:
         session = Session()
+
         query = session.query(
             # Tabla Guia
             Guia.Guia.no_guia.label("No_guia"),
@@ -270,5 +291,130 @@ def getFinancesViewSql():
     
     finally:
         session.close()
-        
-    return True
+
+
+def updateFinancesData(**kwargs):
+    session = Session()
+    
+    try:
+        # Verificamos si la guía existe
+        oea_exist = session.query(Oea.OEA).filter(Oea.OEA.Numero_de_Declaracion == kwargs.get("Numero_de_Declaracion")).first()
+        guia_exists = session.query(Guia.Guia).filter(Guia.Guia.no_guia == kwargs.get("No_guia")).first()
+
+        # Si la guía existe, hacemos los updates
+        if oea_exist:
+            if guia_exists:
+                # Actualizamos los datos de Costeo
+                costeo_values = {
+                    "codigo": kwargs.get("codigo"),
+                    "courier": kwargs.get("courier"),
+                    "correlativo": kwargs.get("correlativo"),
+                    "consignatario": kwargs.get("consignatario"),
+                    "libras_a_facturar": kwargs.get("libras_a_facturar"),
+                    "peso_real_lb": kwargs.get("peso_real_lb"),
+                    "peso_vol_lb": kwargs.get("peso_vol_lb"),
+                    "descripcion_costeo": kwargs.get("descripcion_costeo"),
+                    "cobro_flete": kwargs.get("cobro_flete"),
+                    "ultima_milla": kwargs.get("ultima_milla"),
+                    "gestion_aduana": kwargs.get("gestion_aduana"),
+                    "manejo_almacenaje": kwargs.get("manejo_almacenaje"),
+                    "descuentos": kwargs.get("descuentos"),
+                    "DAI": kwargs.get("DAI"),
+                    "IVA": kwargs.get("IVA")
+                }
+                session.query(Costeo.Costeo).filter(Costeo.Costeo.No_guia == kwargs.get("No_guia")).update(costeo_values)
+
+                # Actualizamos los datos de OEA
+                oea_values = {
+                    "Numero_de_Declaracion": kwargs.get("Numero_de_Declaracion"),
+                    "Declaracion": kwargs.get("Declaracion"),
+                    "Selectivo": kwargs.get("Selectivo")
+                }
+                session.query(Oea.OEA).filter(Oea.OEA.No_guia == kwargs.get("No_guia")).update(oea_values)
+
+            else:
+                pass # Aqui en este punto deberia de suceder algo en caso se quiera hacer un update para una guia que no existe pero la OEA si existe
+
+        # Si la OEA no existe
+        else:
+            # pero la guia si existe hacer los inserts nuevos
+            if guia_exists:
+
+                # Creamos un nuevo registro para Costeo
+                new_costeo = Costeo.Costeo(
+                    No_guia = kwargs.get("No_guia"),
+                    codigo = kwargs.get("codigo"),
+                    courier = kwargs.get("courier"),
+                    correlativo = kwargs.get("correlativo"),
+                    consignatario = kwargs.get("consignatario"),
+                    libras_a_facturar = kwargs.get("libras_a_facturar"),
+                    peso_real_lb = kwargs.get("peso_real_lb"),
+                    peso_vol_lb = kwargs.get("peso_vol_lb"),
+                    descripcion_costeo = kwargs.get("descripcion_costeo"),
+                    cobro_flete = kwargs.get("cobro_flete"),
+                    ultima_milla = kwargs.get("ultima_milla"),
+                    gestion_aduana = kwargs.get("gestion_aduana"),
+                    manejo_almacenaje = kwargs.get("manejo_almacenaje"),
+                    descuentos = kwargs.get("descuentos"),
+                    DAI = kwargs.get("DAI"),
+                    IVA = kwargs.get("IVA")
+                )
+                session.add(new_costeo)
+
+                # Creamos un nuevo registro para OEA
+                new_oea = Oea.OEA(
+                    No_guia = kwargs.get("No_guia"),
+                    Numero_de_Declaracion = kwargs.get("Numero_de_Declaracion"),
+                    Declaracion = kwargs.get("Declaracion"),
+                    Selectivo = kwargs.get("Selectivo")
+                )
+                session.add(new_oea)
+
+            # si ni la guia ni la OEA existen, entonces crear los nuevos registros para todo
+            else:
+                # Obtener la fecha actual en el formato dd-mm-yyyy
+                fecha_actual = date.today().strftime("%d/%m/%Y")
+
+                 # Creamos un nuevo resgistro para Guia
+                new_guia = Guia.Guia(
+                    no_guia = kwargs.get("No_guia"),
+                    fecha = fecha_actual
+                )
+                session.add(new_guia)
+
+                # Creamos un nuevo registro para Costeo
+                new_costeo = Costeo.Costeo(
+                    No_guia = kwargs.get("No_guia"),
+                    codigo = kwargs.get("codigo"),
+                    courier = kwargs.get("courier"),
+                    correlativo = kwargs.get("correlativo"),
+                    consignatario = kwargs.get("consignatario"),
+                    libras_a_facturar = kwargs.get("libras_a_facturar"),
+                    peso_real_lb = kwargs.get("peso_real_lb"),
+                    peso_vol_lb = kwargs.get("peso_vol_lb"),
+                    descripcion_costeo = kwargs.get("descripcion_costeo"),
+                    cobro_flete = kwargs.get("cobro_flete"),
+                    ultima_milla = kwargs.get("ultima_milla"),
+                    gestion_aduana = kwargs.get("gestion_aduana"),
+                    manejo_almacenaje = kwargs.get("manejo_almacenaje"),
+                    descuentos = kwargs.get("descuentos"),
+                    DAI = kwargs.get("DAI"),
+                    IVA = kwargs.get("IVA")
+                )
+                session.add(new_costeo)
+
+                # Creamos un nuevo registro para OEA
+                new_oea = Oea.OEA(
+                    No_guia = kwargs.get("No_guia"),
+                    Numero_de_Declaracion = kwargs.get("Numero_de_Declaracion"),
+                    Declaracion = kwargs.get("Declaracion"),
+                    Selectivo = kwargs.get("Selectivo")
+                )
+                session.add(new_oea)
+
+
+        session.commit()
+        return True
+
+    finally:
+        session.close()
