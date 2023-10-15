@@ -1,11 +1,11 @@
 from pydantic import BaseModel
 from datetime import date
 
-class SelectivoSATBase(BaseModel):
-    revisionID: int
+class SelectivoSatBase(BaseModel):
+    id_selectivo: int
     consolidado_id: int
     fecha_selectivo: date
-    selectivo: str
+    selectivo_asignado: str
 
     class Config:
         orm_mode = True

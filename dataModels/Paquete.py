@@ -1,22 +1,18 @@
 from pydantic import BaseModel
 
 class PaqueteBase(BaseModel):
-    id: int
-    No_guia: int
+    id_paquete: int
+    pedido_id: int
+    codigo_rastreo: str
     contenido: str
-    piezas: int
-    peso_libras: float
-    peso_kilos: float
-    valor_declarado: float
-    news: str
-    linea_de_negocio: str
-    pre_alerta: str
-    guia_externa: str
-    precinto: str
-    largo: float
+    descripcion: str
     alto: float
     ancho: float
-    carrier: str
+    largo: float
+    peso_libras: float
+    peso_volumetrico: float
+    valor_producto_dolar: float
+    cantidad: int
 
     class Config:
         orm_mode = True

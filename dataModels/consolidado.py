@@ -1,11 +1,11 @@
 from pydantic import BaseModel
 from datetime import date
 
-class ConsolidadosBase(BaseModel):
-    consolidadoID: int
+class ConsolidadoBase(BaseModel):
+    id_consolidado: int
     descripcion: str
     fecha_consolidacion: date
-    carrier: str
+    transportista: str
 
     class Config:
         orm_mode = True

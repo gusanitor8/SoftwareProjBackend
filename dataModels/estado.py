@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 
-class RolesBase(BaseModel):
-    roleID: int
-    nombre_rol: str
+class EstadoBase(BaseModel):
+    id_estado: int
+    estado: str
 
     class Config:
         orm_mode = True

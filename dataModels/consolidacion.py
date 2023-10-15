@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
-class PaqueteConsolidadoBase(BaseModel):
-    paqueteconsolidadoID: int
+class ConsolidacionBase(BaseModel):
+    id_consolidacion: int
     consolidado_id: int
     paquete_id: int
 

@@ -1,11 +1,11 @@
 from pydantic import BaseModel
 
-class UsuariosBase(BaseModel):
-    userID: int
+class UsuarioBase(BaseModel):
+    id_usuario: int
     username: str
     password: str
     nombre: str
-    mail: str
+    email: str
     puesto: str
     estado: bool
     salt: str
