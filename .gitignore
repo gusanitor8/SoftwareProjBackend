@@ -11,3 +11,6 @@ env/*
 #vscode
 .vscode/
 .vs/
+
+#jetbrains
+.idea/
