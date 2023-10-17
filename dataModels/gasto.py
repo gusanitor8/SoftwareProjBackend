@@ -1,14 +1,14 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, confloat
 
 class GastoBase(BaseModel):
     id_gasto: int
     paquete_id: int
-    monto_iva_quetzal: float
-    monto_dai_quetzal: float
-    monto_flete: float
-    monto_combex: float
-    valor_quetzal: float
-    gasto_total: float
+    monto_iva_quetzal: confloat(gt=0)
+    monto_dai_quetzal: confloat(gt=0)
+    monto_flete: confloat(gt=0)
+    monto_combex: confloat(gt=0)
+    valor_quetzal: confloat(gt=0)
+    gasto_total: confloat(gt=0)
 
     class Config:
         orm_mode = True

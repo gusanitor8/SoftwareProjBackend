@@ -1,5 +1,5 @@
 from config.database import Base
-from sqlalchemy import Column, Integer, String, Date, ForeignKey
+from sqlalchemy import Column, Integer, Date, String, ForeignKey, func
 from sqlalchemy.orm import relationship
 
 class CambioUsuario(Base):
@@ -10,7 +10,8 @@ class CambioUsuario(Base):
     valor_previo = Column(String)
     valor_actual = Column(String)
     campo_modificado = Column(String)
-    fecha_cambio = Column(Date)
+    fecha_cambio = Column(Date, default=func.now())
     modificador_id = Column(Integer, ForeignKey('usuario.id_usuario'))
 
-    usuario = relationship('usuario')
+    usuario_modificado = relationship('Usuario', foreign_keys=[modificado_id])
+    usuario_modificador = relationship('Usuario', foreign_keys=[modificador_id], backref='cambios')

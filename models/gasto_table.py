@@ -1,17 +1,17 @@
 from config.database import Base
-from sqlalchemy import Column, Integer, Float, ForeignKey
+from sqlalchemy import Column, Integer, Float, ForeignKey, CheckConstraint
 from sqlalchemy.orm import relationship
 
 class Gasto(Base):
     __tablename__ = "gasto"
 
     id_gasto = Column(Integer, primary_key=True, autoincrement=True)
-    paquete_id = Column(Integer, ForeignKey('paquete.id_paquete'))
-    monto_iva_quetzal = Column(Float)
-    monto_dai_quetzal = Column(Float)
-    monto_flete = Column(Float)
-    monto_combex = Column(Float)
-    valor_quetzal = Column(Float)
-    gasto_total = Column(Float)
+    paquete_id = Column(Integer, ForeignKey('paquete.id_paquete'), nullable=False)
+    monto_iva_quetzal = Column(Float, CheckConstraint('monto_iva_quetzal > 0'), nullable=False)
+    monto_dai_quetzal = Column(Float, CheckConstraint('monto_dai_quetzal > 0'), nullable=False)
+    monto_flete = Column(Float, CheckConstraint('monto_flete > 0'), nullable=False)
+    monto_combex = Column(Float, CheckConstraint('monto_combex > 0'), nullable=False)
+    valor_quetzal = Column(Float, CheckConstraint('valor_quetzal > 0'), nullable=False)
+    gasto_total = Column(Float, CheckConstraint('gasto_total > 0'), nullable=False)
 
     paquete = relationship("paquete")
