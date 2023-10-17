@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from dataModels.users import users
+from dataModels.usuario import UsuarioBase
 from fastapi.responses import JSONResponse
 from src.db_auth import get_pw_and_salt, verify_password, get_jwt_credentials, new_user
 from middlewares.jwt_manager import create_token
@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 auth_router = APIRouter()
 
 @auth_router.post("/login", tags = ["auth"])
-async def login(user: users):
+async def login(user: UsuarioBase):
     pw_and_salt = get_pw_and_salt(user.email)
     
     if not pw_and_salt:
@@ -25,12 +25,12 @@ async def login(user: users):
     
 
 @auth_router.post("/signup", tags = ["auth"])
-async def signup(user: users):
+async def signup(user: UsuarioBase):
     try:
-        if not user.role:
-            user.role = "viewer"
+        if not user.rol:
+            user.rol = "viewer"
             
-        new_user(user.email, user.password, user.role)
+        new_user(user.email, user.password, user.rol)
         return JSONResponse(content={"message": "User created"}, status_code=201)
     except IntegrityError:
         return JSONResponse(content={"message": "User already exists"}, status_code=409)

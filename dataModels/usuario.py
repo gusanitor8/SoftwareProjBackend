@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class UsuarioBase(BaseModel):
     id_usuario: int
@@ -8,6 +9,7 @@ class UsuarioBase(BaseModel):
     email: str
     puesto: str
     estado: bool
+    rol: Optional[str] = "viewer"
     salt: str
 
     class Config:

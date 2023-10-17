@@ -11,4 +11,5 @@ class Usuario(Base):
     email = Column(String, unique=True)
     puesto = Column(String)
     estado = Column(Boolean)
+    rol = Column(String)
     salt = Column(String, unique=True)
