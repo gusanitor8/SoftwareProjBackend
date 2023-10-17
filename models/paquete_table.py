@@ -16,6 +16,6 @@ class Paquete(Base):
     peso_libras = Column(Float)
     peso_volumetrico = Column(Float)
     valor_producto_dolar = Column(Float)
-    cantidad = Column(Integer)
+    unidades = Column(Integer)
 
     pedido = relationship("pedido")

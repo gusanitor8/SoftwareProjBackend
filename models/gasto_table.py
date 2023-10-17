@@ -12,5 +12,6 @@ class Gasto(Base):
     monto_flete = Column(Float)
     monto_combex = Column(Float)
     valor_quetzal = Column(Float)
+    gasto_total = Column(Float)
 
     paquete = relationship("paquete")

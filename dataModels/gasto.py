@@ -8,6 +8,7 @@ class GastoBase(BaseModel):
     monto_flete: float
     monto_combex: float
     valor_quetzal: float
+    gasto_total: float
 
     class Config:
         orm_mode = True
