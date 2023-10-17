@@ -2,6 +2,7 @@ from config.database import Base
 from sqlalchemy import Column, Integer, Float, ForeignKey, CheckConstraint
 from sqlalchemy.orm import relationship
 
+
 class Gasto(Base):
     __tablename__ = "gasto"
 
@@ -14,4 +15,4 @@ class Gasto(Base):
     valor_quetzal = Column(Float, CheckConstraint('valor_quetzal > 0'), nullable=False)
     gasto_total = Column(Float, CheckConstraint('gasto_total > 0'), nullable=False)
 
-    paquete = relationship("paquete")
+    gasto_paquete = relationship("Paquete")

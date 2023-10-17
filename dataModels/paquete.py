@@ -1,31 +1,19 @@
-from pydantic import BaseModel, constr, validator
-from typing import List
+from pydantic import BaseModel, constr, confloat, conint
+
 
 class PaqueteBase(BaseModel):
     id_paquete: int
-    pedido_id: int
+    pedido_id: conint(gt=0)
     codigo_rastreo: constr(strip_whitespace=True, min_length=1)
     contenido: constr(strip_whitespace=True, min_length=1)
     descripcion: constr(strip_whitespace=True, min_length=1)
-    alto: float
-    ancho: float
-    largo: float
-    peso_libras: float
-    peso_volumetrico: float
-    valor_producto_dolar: float
-    unidades: int
-
-    @validator("alto", "ancho", "largo", "peso_libras", "peso_volumetrico", "valor_producto_dolar")
-    def check_float_values(cls, v):
-        if v <= 0:
-            raise ValueError("Value must be greater than 0")
-        return v
-
-    @validator("unidades")
-    def check_unidades(cls, v):
-        if v < 1:
-            raise ValueError("unidades must be greater than or equal to 1")
-        return v
+    alto: confloat(gt=0)
+    ancho: confloat(gt=0)
+    largo: confloat(gt=0)
+    peso_libras: confloat(gt=0)
+    peso_volumetrico: confloat(gt=0)
+    valor_producto_dolar: confloat(gt=0)
+    unidades: conint(ge=1)
 
     class Config:
         orm_mode = True

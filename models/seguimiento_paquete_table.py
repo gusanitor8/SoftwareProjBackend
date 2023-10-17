@@ -12,5 +12,5 @@ class SeguimientoPaquete(Base):
     fecha_actualizacion = Column(Date, default=func.now(), nullable=False)
     usuario_id = Column(Integer, ForeignKey('usuario.id_usuario'), nullable=False)
 
-    paquete = relationship("paquete")
-    usuario = relationship("usuario")
+    paquete_seguido = relationship("Paquete")
+    usuario_actualizador = relationship("Usuario")

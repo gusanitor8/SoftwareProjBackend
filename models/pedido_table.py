@@ -1,6 +1,7 @@
 from config.database import Base
 from sqlalchemy import Column, Integer, String, Float, Date, CheckConstraint
 
+
 class Pedido(Base):
     __tablename__ = "pedido"
 

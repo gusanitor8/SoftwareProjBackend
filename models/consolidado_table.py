@@ -1,6 +1,7 @@
 from config.database import Base
 from sqlalchemy import Column, Integer, String, Date, func
 
+
 class Consolidado(Base):
     __tablename__ = "consolidado"
 

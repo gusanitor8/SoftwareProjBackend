@@ -1,6 +1,7 @@
 from pydantic import BaseModel, constr, conint
 from datetime import date
 
+
 class CambioUsuarioBase(BaseModel):
     id_cambio: int
     modificado_id: conint(gt=0)

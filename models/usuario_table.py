@@ -1,6 +1,7 @@
 from config.database import Base
 from sqlalchemy import Column, Integer, String, Boolean, CheckConstraint
 
+
 class Usuario(Base):
     __tablename__ = "usuario"
 
