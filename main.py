@@ -1,21 +1,27 @@
 from fastapi import FastAPI
 from config.database import engine, Base
 from middlewares.error_handler import ErrorHandler
-from routers.excelDB import excelDB_router
-from routers.views import views_router
 from routers.auth import auth_router
 from middlewares.cors_middleware import getOrigins
 from fastapi.middleware.cors import CORSMiddleware
 
 #ORM
-from models.Guia import Guia
-from models.Cuscar import Cuscar
-from models.Destino import Destino
-from models.Facturacion import Facturacion
-from models.Oea import OEA
-from models.Paquete import Paquete
-from models.Remitente import Remitente
+# TODO: Importar todas lobjetos de las tablas correspondientes
+# TODO: Nota: es preferible usar la antigua tabla de usarios porque ya esta lista para el API
 
+# from models.asingacion_rol_table import AsignacionRol
+# from models.cambio_usuario_table import CambioUsuario
+# from models.consolidacion_table import Consolidacion
+# from models.consolidado_table import Consolidado
+# from models.estado_table import Estado
+# from models.gasto_table import Gasto
+# from models.impuesto_table import Impuesto
+# from models.paquete_table import Paquete
+# from models.revision_sat_table import RevisionSat
+# from models.rol_table import Rol
+# from models.seguimiento_paquete_table import SeguimientoPaquete
+# from models.selectivo_sat_table import SelectivoSAT
+# from models.usuario_table import Usuario
 
 app = FastAPI()
 app.title = "SLI Backend API"
@@ -33,8 +39,6 @@ app.add_middleware(
 app.add_middleware(ErrorHandler)
 
 #Routers
-app.include_router(excelDB_router)
-app.include_router(views_router)
 app.include_router(auth_router)
 
 #Database
