@@ -12,7 +12,6 @@ from models.consolidado_table import Consolidado
 from models.gasto_table import Gasto
 from models.impuesto_table import Impuesto
 from models.paquete_table import Paquete
-from models.pedido_table import Pedido
 from models.revision_sat_table import RevisionSat
 from models.seguimiento_paquete_table import SeguimientoPaquete
 from models.selectivo_sat_table import SelectivoSAT

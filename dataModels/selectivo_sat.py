@@ -9,4 +9,4 @@ class SelectivoSatBase(BaseModel):
     selectivo_asignado: constr(strip_whitespace=True, pattern="^(Rojo|Verde)$")
 
     class Config:
-        orm_mode = True
+        from_attributes = True

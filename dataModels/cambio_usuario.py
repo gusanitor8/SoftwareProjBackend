@@ -12,4 +12,4 @@ class CambioUsuarioBase(BaseModel):
     modificador_id: conint(gt=0)
 
     class Config:
-        orm_mode = True
+        from_attributes = True

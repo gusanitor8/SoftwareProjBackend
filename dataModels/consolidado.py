@@ -9,4 +9,4 @@ class ConsolidadoBase(BaseModel):
     transportista: constr(strip_whitespace=True, min_length=1)
 
     class Config:
-        orm_mode = True
+        from_attributes = True

@@ -11,4 +11,4 @@ class RevisionSatBase(BaseModel):
     fecha_modificacion: date
 
     class Config:
-        orm_mode = True
+        from_attributes = True

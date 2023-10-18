@@ -14,4 +14,4 @@ class ImpuestoBase(BaseModel):
     fecha_impuesto: date
 
     class Config:
-        orm_mode = True
+        from_attributes = True

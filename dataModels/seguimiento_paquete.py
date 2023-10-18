@@ -11,4 +11,4 @@ class SeguimientoPaqueteBase(BaseModel):
     usuario_id: conint(gt=0)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
