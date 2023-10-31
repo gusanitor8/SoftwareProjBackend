@@ -10,10 +10,10 @@ class Impuesto(Base):
     paquete_id = Column(String, ForeignKey('paquete.id_paquete'), unique=True, nullable=False)
     monto_iva_dolar = Column(Float, CheckConstraint('monto_iva_dolar > 0'), nullable=False)
     dai_porcentaje = Column(Float, CheckConstraint('dai_porcentaje >= 0 AND dai_porcentaje <= 100'), nullable=False)
-    monto_dai_dolar = Column(Float, CheckConstraint('monto_dai_dolar > 0'),nullable=False)
+    monto_dai_dolar = Column(Float, CheckConstraint('monto_dai_dolar > 0'), nullable=False)
     poliza = Column(String, nullable=False)
     partida = Column(String, nullable=False)
     consignatario = Column(String, nullable=False)
     fecha_impuesto = Column(Date, default=func.now(), nullable=False)
 
-    impuesto_paquete = relationship("paquete")
+    impuesto_paquete = relationship("Paquete")

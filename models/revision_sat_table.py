@@ -12,5 +12,5 @@ class RevisionSat(Base):
     usuario_id = Column(Integer, ForeignKey('usuario.id_usuario'), nullable=False)
     fecha_modificacion = Column(Date, default=func.now(), nullable=False)
 
-    revision_rojo = relationship("SelectivoSat")
+    revision_rojo = relationship("SelectivoSAT")
     usuario_revisor = relationship("Usuario")

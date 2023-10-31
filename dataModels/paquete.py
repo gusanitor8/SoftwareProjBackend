@@ -1,11 +1,12 @@
 from pydantic import BaseModel, constr, confloat, conint
+from CustomExceptions.AttributeMismatch import AttributeMismatch
 from datetime import date
 
 
 class PaqueteBase(BaseModel):
     id_paquete: constr(strip_whitespace=True, min_length=1)
-    factura: constr(strip_whitespace=True, min_length=1) 
-    fecha_orden: date   
+    factura: constr(strip_whitespace=True, min_length=1)
+    fecha_orden: date
     contenido: constr(strip_whitespace=True, min_length=1)
     descripcion: constr(strip_whitespace=True, min_length=1)
     alto: confloat(gt=0)
