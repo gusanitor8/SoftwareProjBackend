@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
-from dataModels.usuario import UsuarioSelect, UsuarioUpdate
+from dataModels.usuario import UsuarioSelect
 from src.db_auth import delete_user, alter_user_state
 
 user_management_router = APIRouter()

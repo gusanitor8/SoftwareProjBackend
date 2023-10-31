@@ -3,7 +3,6 @@ from typing import Optional
 
 
 class UsuarioBase(BaseModel):
-<<<<<<< HEAD
     """
     Esta clase indica los atributos que debe tener un usuario para ser creado.
     """
