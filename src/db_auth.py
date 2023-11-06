@@ -2,7 +2,8 @@ from config.database import Session
 from models.usuario_table import Usuario
 from middlewares.hashing import hash_password
 from datetime import datetime
-
+from src.Roles import Roles
+from middlewares.jwt_manager import validate_token
 
 def get_pw_and_salt(email) -> dict:
     try:
@@ -112,3 +113,42 @@ def alter_user_state(email: str, state: bool) -> bool:
         return True
     finally:
         session.close()
+
+def update_user_permissions(email: str, role: str) -> bool:
+    try:
+        session = Session()
+        result = session.query(Usuario).filter(Usuario.email == email)
+
+        if not result.first():
+            return False
+
+        result.update({"rol": role})
+        session.commit()
+        return True
+    finally:
+        session.close()
+
+def get_role(user_id: int):
+    try:
+        session = Session()
+        result = session.query(Usuario.rol).filter(Usuario.id_usuario == user_id).first()
+
+        if not result:
+            return None
+
+        return result[0]
+
+    finally:
+        session.close()
+
+def roles_match(user_id: int, required_role: Roles) -> bool:
+    """
+    Esta funcion regresa verdadero si el rol del usuario es el mismo que el rol requerido
+    """
+    role = get_role(user_id)
+
+    if role is not None:
+        if role == required_role.value:
+            return True
+
+    return False

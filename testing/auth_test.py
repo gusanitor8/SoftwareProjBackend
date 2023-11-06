@@ -1,5 +1,6 @@
 from ..middlewares.hashing import hash_password
-from ..src.db_auth import get_pw_and_salt, verify_password, new_user, user_is_active, alter_user_state, delete_user
+from ..src.db_auth import get_pw_and_salt, verify_password, new_user, user_is_active, alter_user_state, delete_user, \
+    get_role
 from sqlalchemy.exc import IntegrityError
 
 
@@ -24,7 +25,7 @@ def test_new_user():
     email = "gusanitor8@gmail.com"
     name = "Gustavo Gonzalez"
     password = "Hola1234"
-    role = "admin"
+    role = "viewer"
 
     passed = False
 
@@ -35,7 +36,7 @@ def test_new_user():
                  name=name)
         passed = True
     except IntegrityError:
-        passed = True
+        passed = False
 
     assert passed
 
@@ -68,6 +69,7 @@ def test_alter_user_state():
 
     assert user_is_active(email) == True
 
+
 def test_delete_user():
     email = "pepe"
     res = delete_user(email)
@@ -82,6 +84,8 @@ def test_delete_user():
     test_new_user()
 
 
+def test_get_user_role():
+    user_id = 8
+    role = get_role(user_id)
 
-
-
+    assert role == "admin"

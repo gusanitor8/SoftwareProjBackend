@@ -40,3 +40,5 @@ async def signup(user: UsuarioBase):
         return JSONResponse(content={"message": "User created"}, status_code=201)
     except IntegrityError:
         return JSONResponse(content={"message": "User already exists"}, status_code=409)
+
+

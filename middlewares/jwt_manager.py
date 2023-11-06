@@ -1,10 +1,12 @@
 from jwt import encode, decode, exceptions
 import os
 
+
 def create_token(data) -> str:
     key = os.getenv("SECRET_KEY")
-    token : str = encode(payload=data, key=key, algorithm="HS256")
+    token: str = encode(payload=data, key=key, algorithm="HS256")
     return token
+
 
 def validate_token(token) -> dict:
     key = os.getenv("SECRET_KEY")
