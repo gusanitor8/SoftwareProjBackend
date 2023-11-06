@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from dataModels.usuario import UsuarioBase, UsuarioLogIn
 from fastapi.responses import JSONResponse
-from src.db_auth import get_pw_and_salt, verify_password, get_jwt_credentials, new_user, user_is_active
+from src.database.db_auth import get_pw_and_salt, verify_password, get_jwt_credentials, new_user, user_is_active
 from middlewares.jwt_manager import create_token
 from sqlalchemy.exc import IntegrityError
 

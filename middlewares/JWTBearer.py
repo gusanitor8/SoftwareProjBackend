@@ -1,7 +1,6 @@
 from fastapi.security import HTTPBearer
 from fastapi import HTTPException
 from middlewares.jwt_manager import validate_token
-from src.db_auth import get_role
 
 
 class JWTBearer(HTTPBearer):

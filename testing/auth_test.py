@@ -1,5 +1,5 @@
 from ..middlewares.hashing import hash_password
-from ..src.db_auth import get_pw_and_salt, verify_password, new_user, user_is_active, alter_user_state, delete_user, \
+from src.database.db_auth import get_pw_and_salt, verify_password, new_user, user_is_active, alter_user_state, delete_user, \
     get_role
 from sqlalchemy.exc import IntegrityError
 

@@ -1,5 +1,3 @@
-from src.db_manager import *
-
 # def test_getAnicamView():
 #     result = getAnicamView()
 #     print(result)

@@ -1,13 +1,11 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from dataModels.usuario import UsuarioSelect
-from src.db_auth import delete_user, alter_user_state
+from src.database.db_auth import delete_user, alter_user_state
 from middlewares.JWTBearer import jwt_bearer
-from middlewares.jwt_manager import validate_token
 from typing import Annotated
 from src.Roles import Roles
-from src.db_auth import roles_match, update_user_permissions
-from fastapi.security import OAuth2PasswordBearer
+from src.database.db_auth import roles_match, update_user_permissions
 
 user_management_router = APIRouter()
 

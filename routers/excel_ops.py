@@ -1,7 +1,7 @@
-from fastapi import APIRouter, File, UploadFile
+from fastapi import APIRouter, UploadFile
 from fastapi.responses import JSONResponse
 from src.data_manipulation import excelToDictList
-from src.db_manager import upload_paquete
+from src.database.db_manager import upload_paquete
 from dataModels.paquete import PaqueteBase
 from utils.logging import Logging
 from CustomExceptions.AttributeMismatch import AttributeMismatch
