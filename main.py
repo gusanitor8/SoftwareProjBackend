@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from config.database import engine, Base
 from middlewares.error_handler import ErrorHandler
 from routers.auth import auth_router
-from routers.excel_ops import excel_ops_router
 from routers.user_management_router import user_management_router
 from routers.package_router import package_router
 from middlewares.cors_middleware import getOrigins
@@ -38,7 +37,6 @@ app.add_middleware(ErrorHandler)
 
 #Routers
 app.include_router(auth_router)
-app.include_router(excel_ops_router)
 app.include_router(user_management_router)
 app.include_router(package_router)
 
