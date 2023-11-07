@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 from config.database import engine, Base
 from middlewares.error_handler import ErrorHandler
 from routers.auth import auth_router
@@ -45,4 +46,4 @@ Base.metadata.create_all(bind=engine)
 
 @app.get("/")
 def home():
-    return {"Hello": "World"}
+    return RedirectResponse("/docs")
