@@ -5,7 +5,7 @@ from sqlalchemy import Column, Integer, String, Float, Date, CheckConstraint
 class Paquete(Base):
     __tablename__ = "paquete"
 
-    id_paquete = Column(String, primary_key=True)
+    id_paquete = Column(Integer, primary_key=True, autoincrement=True)
     factura = Column(String, nullable=False)
     fecha_orden = Column(Date, nullable=False)
     contenido = Column(String, nullable=False)

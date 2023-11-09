@@ -1,5 +1,4 @@
 from pydantic import BaseModel, constr
-from typing import Optional
 
 
 class UsuarioBase(BaseModel):
