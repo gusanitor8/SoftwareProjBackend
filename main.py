@@ -22,7 +22,7 @@ from models.usuario_table import Usuario
 
 
 app = FastAPI()
-app.title = "SLI Backend API"
+app.title = "Courier Backend API"
 
 #CORS
 app.add_middleware(
