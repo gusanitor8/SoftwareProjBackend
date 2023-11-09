@@ -5,11 +5,13 @@ class UsuarioBase(BaseModel):
     """
     Esta clase indica los atributos que debe tener un usuario para ser creado.
     """
+    # id_usuario autogenerado
     password: constr(strip_whitespace=True, min_length=1)
     nombre: constr(strip_whitespace=True, min_length=1)
     email: constr(strip_whitespace=True, min_length=1)
     estado: bool
     rol: constr(strip_whitespace=True, pattern="^(viewer|editor|admin)$") = "viewer"
+    # salt autogenerada
 
     class Config:
         from_attributes = True
