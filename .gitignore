@@ -11,3 +11,9 @@ env/*
 #vscode
 .vscode/
 .vs/
+
+#jetbrains
+.idea/
+
+#debug log
+utils/debug.txt
