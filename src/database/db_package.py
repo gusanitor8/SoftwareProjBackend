@@ -65,11 +65,11 @@ def precarga_paquetes(paquetes: List[PaqueteBase], consolidado: ConsolidadoBase)
 
     except IntegrityError as e:
         session.rollback()
-        raise ValueError("Error de integridad: posible registro duplicado o violacion de restricciones.") from e
+        raise ValueError("Error de integridad: posible registro duplicado o violacion de restricciones. " + str(e)) from e
 
     except DataError as e:
         session.rollback()
-        raise ValueError("Error de datos: campos nulos, incompletos o tipo de datos inadecuado.") from e
+        raise ValueError("Error de datos: campos nulos, incompletos o tipo de datos inadecuado."+ str(e)) from e
 
     except OperationalError as e:
         session.rollback()

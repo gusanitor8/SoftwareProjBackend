@@ -22,6 +22,7 @@ def upload_revision(revision: RevisionSatBase, paquete_id: int, cambios: dict,
     try:
         # Actualizar paquete e impuesto
         actualizar_paquete_impuesto(paquete_id, cambios)
+        revision.usuario_id = user_id
 
         # Registrar la revision
         registrar_revision(revision, paquete_id, cambios, user_id)
