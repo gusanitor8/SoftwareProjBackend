@@ -1,10 +1,7 @@
 from config.database import Session
-from models.paquete_table import Paquete
 from models.consolidacion_table import Consolidacion
 from models.selectivo_sat_table import SelectivoSAT
-from middlewares.hashing import hash_password
 from src.Selectivos import Selectivos
-from middlewares.jwt_manager import validate_token
 
 def get_selective(paquete_id: int):
     try:

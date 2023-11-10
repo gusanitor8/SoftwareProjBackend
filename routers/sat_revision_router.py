@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from typing import List, Annotated
 from middlewares.JWTBearer import jwt_bearer
 from dataModels.revision_sat import RevisionSatBase
-from src.database.db_sat_revision import registrar_revision
+from src.database.db_sat_revision import registrar_revision, actualizar_paquete_impuesto
 from src.database.db_auth import roles_match
 from src.database.db_verifications import check_red_selective
 from src.Roles import Roles
@@ -20,7 +20,11 @@ def upload_revision(revision: RevisionSatBase, paquete_id: int, cambios: dict,
     if not check_red_selective(paquete_id, Selectivos.ROJO):
         return JSONResponse(content={"message": "Paquete no es parte de un selectivo ROJO"}, status_code=400)
     try:
-        registrar_revision(revision, paquete_id, cambios)
+        # Actualizar paquete e impuesto
+        actualizar_paquete_impuesto(paquete_id, cambios)
+
+        # Registrar la revision
+        registrar_revision(revision, paquete_id, cambios, user_id)
 
     except ValueError as e:
         # Dinstincion entre errores esperados
@@ -35,4 +39,4 @@ def upload_revision(revision: RevisionSatBase, paquete_id: int, cambios: dict,
         # Manejo de otros errores
         return JSONResponse(content={"message": str(e)}, status_code=500)
     
-    return JSONResponse(content={"message": "Precarga exitosa"}, status_code=201)
+    return JSONResponse(content={"message": "Revision registrada con éxito"}, status_code=201)
