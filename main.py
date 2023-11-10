@@ -11,6 +11,7 @@ from routers.tax_router import tax_router
 from routers.expense_router import expense_router
 from routers.sat_selective_router import sat_selective_router
 from routers.tracking_router import tracking_router
+from routers.sat_revision_router import sat_revision_router
 
 #ORM
 from models.cambio_usuario_table import CambioUsuario
@@ -48,6 +49,7 @@ app.include_router(tax_router)
 app.include_router(expense_router)
 app.include_router(sat_selective_router)
 app.include_router(tracking_router)
+app.include_router(sat_revision_router)
 
 #Database
 Base.metadata.create_all(bind=engine)
