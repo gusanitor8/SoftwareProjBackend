@@ -2,11 +2,16 @@ from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from config.database import engine, Base
 from middlewares.error_handler import ErrorHandler
+from middlewares.cors_middleware import getOrigins
+from fastapi.middleware.cors import CORSMiddleware
 from routers.auth import auth_router
 from routers.user_management_router import user_management_router
 from routers.package_router import package_router
-from middlewares.cors_middleware import getOrigins
-from fastapi.middleware.cors import CORSMiddleware
+from routers.tax_router import tax_router
+from routers.expense_router import expense_router
+from routers.sat_selective_router import sat_selective_router
+from routers.tracking_router import tracking_router
+from routers.sat_revision_router import sat_revision_router
 
 #ORM
 from models.cambio_usuario_table import CambioUsuario
@@ -40,6 +45,11 @@ app.add_middleware(ErrorHandler)
 app.include_router(auth_router)
 app.include_router(user_management_router)
 app.include_router(package_router)
+app.include_router(tax_router)
+app.include_router(expense_router)
+app.include_router(sat_selective_router)
+app.include_router(tracking_router)
+app.include_router(sat_revision_router)
 
 #Database
 Base.metadata.create_all(bind=engine)

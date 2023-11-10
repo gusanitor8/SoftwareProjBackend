@@ -1,13 +1,8 @@
 from pydantic import BaseModel, constr, confloat, conint
-from CustomExceptions.AttributeMismatch import AttributeMismatch
 from datetime import date
 
-
 class PaqueteBase(BaseModel):
-    # TODO recomiendo que el id del paquete sea auto generado (SERIAL),
-    # la funcion upload packages esta lista para recibir este cambio
-
-    id_paquete: constr(strip_whitespace=True, min_length=1)
+    # id_paquete autogenerado
     factura: constr(strip_whitespace=True, min_length=1)
     fecha_orden: date
     contenido: constr(strip_whitespace=True, min_length=1)
@@ -22,7 +17,7 @@ class PaqueteBase(BaseModel):
     direccion_casillero: constr(strip_whitespace=True, min_length=1)
     empresa_remitente: constr(strip_whitespace=True, min_length=1)
     cliente_nombre: constr(strip_whitespace=True, min_length=1)
-    cliente_telefono: conint(ge=1)
+    cliente_telefono: constr(strip_whitespace=True, min_length=1)
     cliente_email: constr(strip_whitespace=True, pattern="^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
     cliente_direccion: constr(strip_whitespace=True, min_length=1)
 
