@@ -5,7 +5,7 @@ from models.impuesto_table import Impuesto
 from models.paquete_table import Paquete
 from sqlalchemy.exc import IntegrityError, DataError, OperationalError
 
-def gastos_de_paquete(gastos: GastoBase):
+def carga_gastos(gastos: GastoBase):
     try:
         session = Session()
 

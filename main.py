@@ -8,7 +8,8 @@ from routers.auth import auth_router
 from routers.user_management_router import user_management_router
 from routers.package_router import package_router
 from routers.tax_router import tax_router
-
+from routers.expense_router import expense_router
+from routers.sat_selective_router import sat_selective_router
 
 #ORM
 from models.cambio_usuario_table import CambioUsuario
@@ -43,6 +44,8 @@ app.include_router(auth_router)
 app.include_router(user_management_router)
 app.include_router(package_router)
 app.include_router(tax_router)
+app.include_router(expense_router)
+app.include_router(sat_selective_router)
 
 #Database
 Base.metadata.create_all(bind=engine)
