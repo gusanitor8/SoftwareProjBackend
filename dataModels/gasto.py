@@ -2,6 +2,7 @@ from pydantic import BaseModel, confloat, conint
 
 
 class GastoBase(BaseModel):
+    # id_gasto autogenerado
     paquete_id: conint(gt=0)
     monto_iva_quetzal: confloat(gt=0)
     monto_dai_quetzal: confloat(gt=0)

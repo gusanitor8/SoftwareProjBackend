@@ -13,16 +13,16 @@ def carga_impuestos(impuesto: ImpuestoBase):
 
         paquete = session.query(Paquete).filter(Paquete.id_paquete == impuesto.paquete_id).one()
         
-        monto_iva_dolar = paquete.valor_producto_dolar * 0.12
-        monto_dai_dolar = paquete.valor_producto_dolar * (impuesto.dai_porcentaje / 100)
+        iva_dolar = paquete.valor_producto_dolar * 0.12
+        dai_dolar = paquete.valor_producto_dolar * (impuesto.dai_porcentaje / 100)
 
         # Crear el objeto Impuesto
-        nuevo_impuesto = Impuesto(
+        impuesto_obj = Impuesto(
             # id_impuesto autogenerado
             paquete_id = impuesto.paquete_id,
-            monto_iva_dolar = monto_iva_dolar,
+            monto_iva_dolar = iva_dolar,
             dai_porcentaje = impuesto.dai_porcentaje,
-            monto_dai_dolar = monto_dai_dolar,
+            monto_dai_dolar = dai_dolar,
             poliza = impuesto.poliza,
             partida = impuesto.partida,
             consignatario = impuesto.consignatario
@@ -30,7 +30,7 @@ def carga_impuestos(impuesto: ImpuestoBase):
         )
         
         # Insertar el nuevo impuesto en la base de datos
-        session.add(nuevo_impuesto)
+        session.add(impuesto_obj)
 
         session.commit()
     
