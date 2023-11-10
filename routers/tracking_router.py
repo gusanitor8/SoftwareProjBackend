@@ -31,4 +31,4 @@ def upload_estado(seguimiento: SeguimientoPaqueteBase,
         # Manejo de otros errores
         return JSONResponse(content={"message": str(e)}, status_code=500)
     
-    return JSONResponse(content={"message": "Precarga exitosa"}, status_code=201)
+    return JSONResponse(content={"message": "Carga de rastreo de paquete exitosa"}, status_code=201)

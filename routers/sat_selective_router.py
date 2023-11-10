@@ -32,4 +32,4 @@ def upload_selectivo(selectivo: SelectivoSatBase,
         # Manejo de otros errores
         return JSONResponse(content={"message": str(e)}, status_code=500)
     
-    return JSONResponse(content={"message": "Precarga exitosa"}, status_code=201)
+    return JSONResponse(content={"message": "Carga de Selectivo exitosa"}, status_code=201)
