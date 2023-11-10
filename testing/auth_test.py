@@ -3,6 +3,11 @@ from src.database.db_auth import get_pw_and_salt, verify_password, new_user, use
     get_role
 from sqlalchemy.exc import IntegrityError
 
+# TODO: Borra estos imports
+from config.database import Session
+from dataModels.usuario import UsuarioBase
+from models.usuario_table import Usuario
+
 
 def test_hash_password():
     hashed_password, salt = hash_password("test")
@@ -89,3 +94,28 @@ def test_get_user_role():
     role = get_role(user_id)
 
     assert role == "admin"
+
+def test_returning_value():
+
+    try:
+        session = Session()
+        usuario = Usuario(
+            email="pruebita3@gmail.com",
+            nombre="pruebita",
+            password="Hola123",
+            estado=True,
+            rol="viewer",
+            salt="123"
+        )
+
+        session.add(usuario)
+
+        session.commit()
+
+        new_id = usuario.id_usuario
+        assert new_id == 4
+
+
+    finally:
+        session.close()
+

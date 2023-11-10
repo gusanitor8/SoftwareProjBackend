@@ -1,8 +1,8 @@
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 from config.database import engine, Base
 from middlewares.error_handler import ErrorHandler
 from routers.auth import auth_router
-from routers.excel_ops import excel_ops_router
 from routers.user_management_router import user_management_router
 from routers.package_router import package_router
 from middlewares.cors_middleware import getOrigins
@@ -22,7 +22,7 @@ from models.usuario_table import Usuario
 
 
 app = FastAPI()
-app.title = "SLI Backend API"
+app.title = "Courier Backend API"
 
 #CORS
 app.add_middleware(
@@ -38,7 +38,6 @@ app.add_middleware(ErrorHandler)
 
 #Routers
 app.include_router(auth_router)
-app.include_router(excel_ops_router)
 app.include_router(user_management_router)
 app.include_router(package_router)
 
@@ -47,4 +46,4 @@ Base.metadata.create_all(bind=engine)
 
 @app.get("/")
 def home():
-    return {"Hello": "World"}
+    return RedirectResponse("/docs")
