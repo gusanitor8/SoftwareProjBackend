@@ -2,22 +2,21 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from typing import List, Annotated
 from middlewares.JWTBearer import jwt_bearer
-from dataModels.selectivo_sat import SelectivoSatBase
-from src.database.db_sat_selective import carga_selectivo
+from dataModels.seguimiento_paquete import SeguimientoPaqueteBase
+from src.database.db_tracking import seguimiento_paquete
 from src.database.db_auth import roles_match
 from src.Roles import Roles
 
+tracking_router = APIRouter()
 
-sat_selective_router = APIRouter()
-
-
-@sat_selective_router.post("/selectivo", tags=["selectivo_sat"])
-def upload_selectivo(selectivo: SelectivoSatBase, 
-                    user_id: Annotated[int, Depends(jwt_bearer)]):
+@tracking_router.post("/seguimiento", tags=["seguimiento"])
+def upload_estado(seguimiento: SeguimientoPaqueteBase,
+                  user_id: Annotated[int, Depends(jwt_bearer)]):
     if not roles_match(user_id, Roles.EDITOR) and not roles_match(user_id, Roles.ADMIN):
-        return JSONResponse(content={"message": "Usuario no autorizado para CARGA SELECTIVO"}, status_code=403)
+        return JSONResponse(content={"message": "Usuario no autorizado para ACTUALIZAR ESTADO PAQUETE"}, status_code=403)
     try:
-        carga_selectivo(selectivo)
+        seguimiento.usuario_id = user_id
+        seguimiento_paquete(seguimiento)
 
     except ValueError as e:
         # Dinstincion entre errores esperados
