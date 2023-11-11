@@ -13,19 +13,18 @@ sat_revision_router = APIRouter()
 
 
 @sat_revision_router.post("/revisionSAT", tags=["revisionSAT"])
-def upload_revision(revision: RevisionSatBase, paquete_id: int, cambios: dict,
+def upload_revision(revision: RevisionSatBase, paquete_id: int,
                     user_id: Annotated[int, Depends(jwt_bearer)]):
     if not roles_match(user_id, Roles.EDITOR) and not roles_match(user_id, Roles.ADMIN):
         return JSONResponse(content={"message": "Usuario no autorizado para PRECARGA"}, status_code=403)
     if not check_red_selective(paquete_id, Selectivos.ROJO):
         return JSONResponse(content={"message": "Paquete no es parte de un selectivo ROJO"}, status_code=400)
     try:
-        # Actualizar paquete e impuesto
-        actualizar_paquete_impuesto(paquete_id, cambios)
+        # Asignar id de usuario loggeado
         revision.usuario_id = user_id
 
         # Registrar la revision
-        registrar_revision(revision, paquete_id, cambios, user_id)
+        registrar_revision(revision, paquete_id)
 
     except ValueError as e:
         # Dinstincion entre errores esperados

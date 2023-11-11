@@ -7,75 +7,36 @@ from models.gasto_table import Gasto
 from typing import Dict, Any
 from sqlalchemy.exc import IntegrityError, DataError, OperationalError
 
-def registrar_revision(revision: RevisionSatBase, id_paquete: int, cambios: Dict[str, Any]):
+def registrar_revision(revision: RevisionSatBase, paquete_id: int):
     
     try:
         
         session = Session()
+        # Validar que no sean nulos los nuevos valores
+        if revision.nuevo_valor_dai and revision.nuevo_valor_paquete:
 
-        # Obtener datos actuales del paquete e impuesto
-        paquete_actual = session.query(Paquete).filter(Paquete.id_paquete == id_paquete).one()
-        impuesto_actual = session.query(Impuesto).filter(Impuesto.paquete_id == id_paquete).one()
+            paquete = session.query(Paquete).filter(Paquete.id_paquete == paquete_id).one()
+            impuesto = session.query(Impuesto).filter(Impuesto.paquete_id == paquete_id).one()
 
-        # Convertir a diccionarios
-        paquete_dict = {column.name: getattr(paquete_actual, column.name) for column in paquete_actual.__table__.columns}
-        impuesto_dict = {column.name: getattr(impuesto_actual, column.name) for column in impuesto_actual.__table__.columns}
+            # Actualizar los valores del paquete e impuesto si es necesario
+            if revision.nuevo_valor_paquete:
+                paquete.valor_producto_dolar = revision.nuevo_valor_paquete
+            if revision.nuevo_valor_dai:
+                impuesto.dai_porcentaje = revision.nuevo_valor_dai
 
-        # Combinar los diccionarios de paquete e impuesto
-        registro_actual = {**paquete_dict, **impuesto_dict}
+            # Insertar nuevo registro de cambios
+            revision_obj = RevisionSat(
+                valor_paquete_previo = paquete.valor_producto_dolar,
+                valor_dai_previo = impuesto.dai_porcentaje,
+                motivo_cambio = revision.motivo_cambio,
+                usuario_id = revision.usuario_id
+            )
+            session.add(revision_obj)
 
-        # Crear registro de RevisionSat
-        revision_obj = RevisionSat(
-            selectivo_id = revision.selectivo_id,
-            registros_antiguos = registro_actual,
-            registros_nuevos = cambios,
-            usuario_id = revision.usuario_id
-        )
-
-        session.add(revision_obj)
-        session.commit()
-
-    except IntegrityError as e:
-        session.rollback()
-        raise ValueError("Error de integridad: posible registro duplicado o violacion de restricciones.") from e
-
-    except DataError as e:
-        session.rollback()
-        raise ValueError("Error de datos: campos nulos, incompletos o tipo de datos inadecuado.") from e
-
-    except OperationalError as e:
-        session.rollback()
-        raise Exception("Error operacional en la base de datos.") from e
-
-    except Exception as e:
-        session.rollback()
-        raise Exception(f"Error inesperado: {str(e)}") from e
-
-    finally:
-        session.close()
-
-
-def actualizar_paquete_impuesto(paquete_id: int, cambios: Dict[str, Any]):
-    session = Session()
-    try:
-        paquete = session.query(Paquete).filter(Paquete.id_paquete == paquete_id).one()
-        impuesto = session.query(Impuesto).filter(Impuesto.paquete_id == paquete_id).one()
-
-        # Actualizar datos del paquete
-        for key, value in cambios['paquete'].items():
-            if hasattr(paquete, key):
-                setattr(paquete, key, value)
-
-        # Actualizar datos del impuesto
-        for key, value in cambios['impuesto'].items():
-            if hasattr(impuesto, key):
-                setattr(impuesto, key, value)
-
-        # Aquí puedes llamar a funciones para recalcular valores dependientes
-        recalcular_valores_dependientes(paquete, impuesto)
-
-        session.commit()
+            recalcular_valores_dependientes(paquete, impuesto)
         
+        session.commit()
+
     except IntegrityError as e:
         session.rollback()
         raise ValueError("Error de integridad: posible registro duplicado o violacion de restricciones.") from e
