@@ -4,7 +4,6 @@ from models.revision_sat_table import RevisionSat
 from models.paquete_table import Paquete
 from models.impuesto_table import Impuesto
 from models.gasto_table import Gasto
-from typing import Dict, Any
 from sqlalchemy.exc import IntegrityError, DataError, OperationalError
 
 def registrar_revision(revision: RevisionSatBase, paquete_id: int):
@@ -13,7 +12,7 @@ def registrar_revision(revision: RevisionSatBase, paquete_id: int):
         
         session = Session()
         # Validar que no sean nulos los nuevos valores
-        if revision.nuevo_valor_dai and revision.nuevo_valor_paquete:
+        if revision.nuevo_valor_dai or revision.nuevo_valor_paquete:
 
             paquete = session.query(Paquete).filter(Paquete.id_paquete == paquete_id).one()
             impuesto = session.query(Impuesto).filter(Impuesto.paquete_id == paquete_id).one()

@@ -6,13 +6,15 @@ from src.Selectivos import Selectivos
 def get_selective(paquete_id: int):
     try:
         session = Session()
-        consolidado_id = session.query(Consolidacion.consolidado_id).filter(Consolidacion.paquete_id == paquete_id).first()
-        selective = session.query(SelectivoSAT.selectivo_asignado).filter(SelectivoSAT.consolidado_id == consolidado_id).first()
+        consolidacion = session.query(Consolidacion).filter(Consolidacion.paquete_id == paquete_id).first()
+        consolidado_id = consolidacion.consolidado_id
+        selectivoSat = session.query(SelectivoSAT).filter(SelectivoSAT.consolidado_id == consolidado_id).first()
+        selectivo = selectivoSat.selectivo_asignado
 
-        if selective is None:
+        if selectivo is None:
             return None
         
-        return selective
+        return selectivo
 
     finally:
         session.close()

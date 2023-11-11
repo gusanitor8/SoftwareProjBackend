@@ -54,10 +54,10 @@ def precarga_paquetes(paquetes: List[PaqueteBase], consolidado: ConsolidadoBase)
 
 
         # Cracion e insercion de consolidaciones
-        for paquete in paquetes_objs:
+        for package in paquetes_objs:
             consolidacion_obj = Consolidacion(
                 consolidado_id = consolidado_obj.id_consolidado,
-                paquete_id = paquete_obj.id_paquete
+                paquete_id = package.id_paquete
             )
             session.add(consolidacion_obj)
 
