@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from typing import List, Annotated
 from middlewares.JWTBearer import jwt_bearer
 from dataModels.revision_sat import RevisionSatBase
-from src.database.db_sat_revision import registrar_revision, actualizar_paquete_impuesto
+from src.database.db_sat_revision import registrar_revision
 from src.database.db_auth import roles_match
 from src.database.db_verifications import check_red_selective
 from src.Roles import Roles
