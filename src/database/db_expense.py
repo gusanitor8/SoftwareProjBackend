@@ -3,9 +3,10 @@ from dataModels.gasto import GastoBase
 from models.gasto_table import Gasto
 from models.impuesto_table import Impuesto
 from models.paquete_table import Paquete
+from models.seguimiento_paquete_table import SeguimientoPaquete
 from sqlalchemy.exc import IntegrityError, DataError, OperationalError
 
-def carga_gastos(gastos: GastoBase):
+def carga_gastos(gastos: GastoBase, user: int):
     try:
         session = Session()
 
@@ -34,6 +35,16 @@ def carga_gastos(gastos: GastoBase):
 
         # Insertar el nuevo impuesto en la base de datos
         session.add(gasto_obj)
+
+
+        # Crear seguimiento para cada paquete en el consolidado
+        seguimiento_obj = SeguimientoPaquete(
+            estado_actual='en bodega',
+                motivo_cambio='Listo para entrega',
+                paquete_id= paquete.id_paquete,
+                usuario_id= user
+            )
+        session.add(seguimiento_obj)
 
         session.commit()
 

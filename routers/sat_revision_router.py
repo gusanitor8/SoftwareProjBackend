@@ -20,11 +20,9 @@ def upload_revision(revision: RevisionSatBase, paquete_id: int,
     if not check_red_selective(paquete_id, Selectivos.ROJO):
         return JSONResponse(content={"message": "Paquete no es parte de un selectivo ROJO"}, status_code=400)
     try:
-        # Asignar id de usuario loggeado
-        revision.usuario_id = user_id
 
         # Registrar la revision
-        registrar_revision(revision, paquete_id)
+        registrar_revision(revision, paquete_id, user_id)
 
     except ValueError as e:
         # Dinstincion entre errores esperados

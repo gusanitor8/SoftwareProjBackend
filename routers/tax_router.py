@@ -17,7 +17,7 @@ def upload_impuesto(impuesto: ImpuestoBase,
     if not roles_match(user_id, Roles.EDITOR) and not roles_match(user_id, Roles.ADMIN):
         return JSONResponse(content={"message": "Usuario no autorizado para CARGA IMPUESTO"}, status_code=403)
     try:
-        carga_impuestos(impuesto)
+        carga_impuestos(impuesto, user_id)
     except ValueError as e:
         # Dinstincion entre errores esperados
         error_message = str(e)

@@ -4,11 +4,12 @@ from dataModels.consolidado import ConsolidadoBase
 from models.paquete_table import Paquete
 from models.consolidado_table import Consolidado
 from models.consolidacion_table import Consolidacion
+from models.seguimiento_paquete_table import SeguimientoPaquete
 from sqlalchemy.exc import IntegrityError, DataError, OperationalError
 from typing import List
 
 
-def precarga_paquetes(paquetes: List[PaqueteBase], consolidado: ConsolidadoBase):
+def precarga_paquetes(paquetes: List[PaqueteBase], consolidado: ConsolidadoBase, user: int):
     try:
         session = Session()
 
@@ -48,6 +49,7 @@ def precarga_paquetes(paquetes: List[PaqueteBase], consolidado: ConsolidadoBase)
                 cliente_direccion = paquete.cliente_direccion
             )
             session.add(paquete_obj)
+
             # obtencion de IDs sin hacer commit
             session.flush()
             paquetes_objs.append(paquete_obj)
@@ -60,6 +62,15 @@ def precarga_paquetes(paquetes: List[PaqueteBase], consolidado: ConsolidadoBase)
                 paquete_id = package.id_paquete
             )
             session.add(consolidacion_obj)
+
+            # Creacion e insercion de registro de seguimiento para cada paquete
+            seguimiento_obj = SeguimientoPaquete(
+                estado_actual='en transito',
+                motivo_cambio='Precarga de paquete',
+                paquete_id = package.id_paquete,
+                usuario_id = user  
+            )
+            session.add(seguimiento_obj)
 
         session.commit()
 

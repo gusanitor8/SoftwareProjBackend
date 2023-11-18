@@ -4,9 +4,10 @@ from models.revision_sat_table import RevisionSat
 from models.paquete_table import Paquete
 from models.impuesto_table import Impuesto
 from models.gasto_table import Gasto
+from models.seguimiento_paquete_table import SeguimientoPaquete
 from sqlalchemy.exc import IntegrityError, DataError, OperationalError, NoResultFound
 
-def registrar_revision(revision: RevisionSatBase, paquete_id: int):
+def registrar_revision(revision: RevisionSatBase, paquete_id: int, user: int):
     
     try:
         
@@ -34,11 +35,20 @@ def registrar_revision(revision: RevisionSatBase, paquete_id: int):
                 valor_paquete_previo = paquete.valor_producto_dolar,
                 valor_dai_previo = impuesto.dai_porcentaje,
                 motivo_cambio = revision.motivo_cambio,
-                usuario_id = revision.usuario_id
+                usuario_id = user
             )
             session.add(revision_obj)
 
             recalcular_valores_dependientes(paquete, impuesto)
+
+            # Crear seguimiento para los paquetes modificados
+            seguimiento_obj = SeguimientoPaquete(
+                    estado_actual = 'liberado',
+                    motivo_cambio ='Revision SAT finalizada',
+                    paquete_id = paquete_id,
+                    usuario_id = user
+                )
+            session.add(seguimiento_obj)
         
         session.commit()
 

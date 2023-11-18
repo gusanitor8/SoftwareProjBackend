@@ -18,7 +18,8 @@ def upload_precarga(paquetes: List[PaqueteBase], consolidado: ConsolidadoBase,
     if not roles_match(user_id, Roles.EDITOR) and not roles_match(user_id, Roles.ADMIN):
         return JSONResponse(content={"message": "Usuario no autorizado para PRECARGA"}, status_code=403)
     try:
-        precarga_paquetes(paquetes, consolidado)
+
+        precarga_paquetes(paquetes, consolidado, user_id)
 
     except ValueError as e:
         # Dinstincion entre errores esperados

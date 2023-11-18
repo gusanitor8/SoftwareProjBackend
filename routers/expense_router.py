@@ -17,7 +17,7 @@ def upload_gasto(gastos: GastoBase,
     if not roles_match(user_id, Roles.EDITOR) and not roles_match(user_id, Roles.ADMIN):
         return JSONResponse(content={"message": "Usuario no autorizado para CARGA DE GASTOS"}, status_code=403)
     try:
-        carga_gastos(gastos)
+        carga_gastos(gastos, user_id)
 
     except ValueError as e:
         # Dinstincion entre errores esperados

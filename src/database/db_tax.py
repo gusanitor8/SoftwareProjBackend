@@ -2,12 +2,13 @@ from config.database import Session
 from dataModels.impuesto import ImpuestoBase
 from models.impuesto_table import Impuesto
 from models.paquete_table import Paquete
+from models.seguimiento_paquete_table import SeguimientoPaquete
 from sqlalchemy.exc import IntegrityError, DataError, OperationalError, NoResultFound
 
 
 
 
-def carga_impuestos(impuesto: ImpuestoBase):
+def carga_impuestos(impuesto: ImpuestoBase, user: int):
     try:
         session = Session()
 
@@ -37,6 +38,18 @@ def carga_impuestos(impuesto: ImpuestoBase):
         
         # Insertar el nuevo impuesto en la base de datos
         session.add(impuesto_obj)
+
+
+        # Creacion e insercion de registro de seguimiento para paquete
+        seguimiento_obj = SeguimientoPaquete(
+                estado_actual='gestion aduana',
+                motivo_cambio='Carga de impuestos',
+                paquete_id = impuesto.paquete_id,
+                usuario_id = user  
+            )
+        session.add(seguimiento_obj)
+
+
 
         session.commit()
     

@@ -17,7 +17,7 @@ def upload_selectivo(selectivo: SelectivoSatBase,
     if not roles_match(user_id, Roles.EDITOR) and not roles_match(user_id, Roles.ADMIN):
         return JSONResponse(content={"message": "Usuario no autorizado para CARGA SELECTIVO"}, status_code=403)
     try:
-        carga_selectivo(selectivo)
+        carga_selectivo(selectivo, user_id)
 
     except ValueError as e:
         # Dinstincion entre errores esperados
