@@ -2,7 +2,7 @@ from config.database import Session
 from dataModels.impuesto import ImpuestoBase
 from models.impuesto_table import Impuesto
 from models.paquete_table import Paquete
-from sqlalchemy.exc import IntegrityError, DataError, OperationalError
+from sqlalchemy.exc import IntegrityError, DataError, OperationalError, NoResultFound
 
 
 
@@ -10,6 +10,12 @@ from sqlalchemy.exc import IntegrityError, DataError, OperationalError
 def carga_impuestos(impuesto: ImpuestoBase):
     try:
         session = Session()
+
+        # Verificar si ya existe un impuesto para el paquete dado
+        impuesto_existente = session.query(Impuesto).filter_by(paquete_id=impuesto.paquete_id,).first()
+
+        if impuesto_existente:
+            raise ValueError("Ya existe un impuesto para el paquete y poliza proporcionados.")
 
         paquete = session.query(Paquete).filter(Paquete.id_paquete == impuesto.paquete_id).one()
         
@@ -37,6 +43,10 @@ def carga_impuestos(impuesto: ImpuestoBase):
     except IntegrityError as e:
         session.rollback()
         raise ValueError("Error de integridad: posible registro duplicado o violacion de restricciones.") from e
+    
+    except NoResultFound:
+        session.rollback()
+        raise ValueError("Paquete no encontrado con el ID proporcionado.")
 
     except DataError as e:
         session.rollback()

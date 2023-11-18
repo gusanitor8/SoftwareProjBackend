@@ -31,6 +31,8 @@ def upload_revision(revision: RevisionSatBase, paquete_id: int,
         error_message = str(e)
         if 'integridad' in error_message:
             status_code = 409
+        elif 'no encontrado' in error_message:
+            status_code = 404
         else:
             status_code = 400
         return JSONResponse(content={"message": error_message}, status_code=status_code)

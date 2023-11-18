@@ -4,7 +4,7 @@ from models.revision_sat_table import RevisionSat
 from models.paquete_table import Paquete
 from models.impuesto_table import Impuesto
 from models.gasto_table import Gasto
-from sqlalchemy.exc import IntegrityError, DataError, OperationalError
+from sqlalchemy.exc import IntegrityError, DataError, OperationalError, NoResultFound
 
 def registrar_revision(revision: RevisionSatBase, paquete_id: int):
     
@@ -13,9 +13,15 @@ def registrar_revision(revision: RevisionSatBase, paquete_id: int):
         session = Session()
         # Validar que no sean nulos los nuevos valores
         if revision.nuevo_valor_dai or revision.nuevo_valor_paquete:
+            try:
+                paquete = session.query(Paquete).filter(Paquete.id_paquete == paquete_id).one()
+            except NoResultFound:
+                raise ValueError("Paquete no encontrado con el ID proporcionado.")
 
-            paquete = session.query(Paquete).filter(Paquete.id_paquete == paquete_id).one()
-            impuesto = session.query(Impuesto).filter(Impuesto.paquete_id == paquete_id).one()
+            try:
+                impuesto = session.query(Impuesto).filter(Impuesto.paquete_id == paquete_id).one()
+            except NoResultFound:
+                raise ValueError("Impuesto no encontrado para el paquete proporcionado.")
 
             # Actualizar los valores del paquete e impuesto si es necesario
             if revision.nuevo_valor_paquete:
