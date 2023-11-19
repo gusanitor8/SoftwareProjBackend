@@ -7,7 +7,7 @@ class Impuesto(Base):
     __tablename__ = "impuesto"
 
     id_impuesto = Column(Integer, primary_key=True, autoincrement=True)
-    paquete_id = Column(String, ForeignKey('paquete.id_paquete'), unique=True, nullable=False)
+    paquete_id = Column(Integer, ForeignKey('paquete.id_paquete'), unique=True, nullable=False)
     monto_iva_dolar = Column(Float, CheckConstraint('monto_iva_dolar > 0'), nullable=False)
     dai_porcentaje = Column(Float, CheckConstraint('dai_porcentaje >= 0 AND dai_porcentaje <= 100'), nullable=False)
     monto_dai_dolar = Column(Float, CheckConstraint('monto_dai_dolar > 0'), nullable=False)
