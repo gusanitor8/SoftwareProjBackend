@@ -5,6 +5,7 @@ from datetime import datetime
 from src.Roles import Roles
 from middlewares.jwt_manager import validate_token
 
+
 def get_pw_and_salt(email) -> dict:
     try:
         session = Session()
@@ -114,6 +115,7 @@ def alter_user_state(email: str, state: bool) -> bool:
     finally:
         session.close()
 
+
 def update_user_permissions(email: str, role: str) -> bool:
     try:
         session = Session()
@@ -128,6 +130,7 @@ def update_user_permissions(email: str, role: str) -> bool:
     finally:
         session.close()
 
+
 def get_role(user_id: int):
     try:
         session = Session()
@@ -140,6 +143,7 @@ def get_role(user_id: int):
 
     finally:
         session.close()
+
 
 def roles_match(user_id: int, required_role: Roles) -> bool:
     """

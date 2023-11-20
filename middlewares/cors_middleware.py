@@ -5,11 +5,8 @@ def getOrigins():
         "http://127.0.0.1:5500",
 
         #backend servers
-        "https://softapi-production.up.railway.app",
-        "https://softapi-development.up.railway.app"
-
-        "http://softapi-production.up.railway.app",
-        "http://softapi-development.up.railway.app",
+        "https://slianicambackend-development.up.railway.app",
+        "https://slianicambackend-production.up.railway.app",
 
         #frontend servers
         "https://gruposli-gt.web.app"
