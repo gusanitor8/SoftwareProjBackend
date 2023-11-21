@@ -30,12 +30,12 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi    
     - name: Test with pytest
       env:
-        DB_USER: ${{ secrets.QA.DB_USER }}
-        DB_PASSWORD: ${{ secrets.QA.DB_PASSWORD }}
-        DB_HOST: ${{ secrets.QA.DB_HOST }}
-        DB_PORT: ${{ secrets.QA.DB_PORT }}
-        DB_DATABASE_NAME: ${{ secrets.QA.DB_DATABASE_NAME }}
-        SECRET_KEY: ${{ secrets.QA.SECRET_KEY }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD_QA }}
+        DB_HOST: ${{ secrets.DB_HOST_QA }}
+        DB_PORT: ${{ secrets.QA_DB_PORT }}
+        DB_DATABASE_NAME: ${{ secrets.QA_DB_DATABASE_NAME }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
       run: |
         echo "user: $DB_USER "
         echo "pw: $DB_PASSWORD "
