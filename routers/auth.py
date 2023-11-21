@@ -1,9 +1,14 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from dataModels.usuario import UsuarioBase, UsuarioLogIn
 from fastapi.responses import JSONResponse
-from src.database.db_auth import get_pw_and_salt, verify_password, get_jwt_credentials, new_user, user_is_active
+from src.database.db_auth import get_pw_and_salt, verify_password, get_jwt_credentials, new_user, user_is_active, \
+    roles_match, get_users, get_role
 from middlewares.jwt_manager import create_token
 from sqlalchemy.exc import IntegrityError
+from middlewares.JWTBearer import jwt_bearer
+from typing import Annotated
+from src.Roles import Roles as Role
+import json
 
 auth_router = APIRouter()
 
@@ -42,3 +47,16 @@ async def signup(user: UsuarioBase):
         return JSONResponse(content={"message": "User already exists"}, status_code=409)
 
 
+@auth_router.get("/users/permissions", tags=["auth"])
+def get_user_permissions(user_id: Annotated[int, Depends(jwt_bearer)]):
+    role = get_role(user_id)
+    return JSONResponse(content=role, status_code=200)
+
+
+@auth_router.get("/users", tags=["auth"])
+def get_users_endpoint(page_num: int, user_id: Annotated[int, Depends(jwt_bearer)]):
+    if not roles_match(user_id, Role.ADMIN):
+        return JSONResponse(content={"message": "No cuenta con los permisos necesarios"}, status_code=401)
+
+    users = get_users(page_num)
+    return JSONResponse(content={"users": users}, status_code=200)

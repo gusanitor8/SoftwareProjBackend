@@ -92,3 +92,11 @@ def precarga_paquetes(paquetes: List[PaqueteBase], consolidado: ConsolidadoBase,
 
     finally:
         session.close()
+
+def get_consolidado(consolidado_id: int):
+    try:
+        session = Session()
+        consolidados = session.query(Consolidado).filter(Consolidado.id_consolidado == consolidado_id).first()
+        return consolidados._asdict()
+    finally:
+        session.close()

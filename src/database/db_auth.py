@@ -5,6 +5,7 @@ from datetime import datetime
 from src.Roles import Roles
 from middlewares.jwt_manager import validate_token
 
+
 def get_pw_and_salt(email) -> dict:
     try:
         session = Session()
@@ -114,6 +115,7 @@ def alter_user_state(email: str, state: bool) -> bool:
     finally:
         session.close()
 
+
 def update_user_permissions(email: str, role: str) -> bool:
     try:
         session = Session()
@@ -128,6 +130,7 @@ def update_user_permissions(email: str, role: str) -> bool:
     finally:
         session.close()
 
+
 def get_role(user_id: int):
     try:
         session = Session()
@@ -141,6 +144,7 @@ def get_role(user_id: int):
     finally:
         session.close()
 
+
 def roles_match(user_id: int, required_role: Roles) -> bool:
     """
     Esta funcion regresa verdadero si el rol del usuario es el mismo que el rol requerido
@@ -152,3 +156,20 @@ def roles_match(user_id: int, required_role: Roles) -> bool:
             return True
 
     return False
+
+
+def get_users(page: int):
+    user_quantity = 10
+    page = max(0, page - 1) * user_quantity
+    try:
+        session = Session()
+        result = (
+            session.query(Usuario.nombre, Usuario.email, Usuario.rol)
+            .offset(page)
+            .limit(user_quantity)
+            .all())
+
+        result = list(map(lambda x: x._asdict(), result))
+        return result
+    finally:
+        session.close()

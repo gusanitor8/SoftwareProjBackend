@@ -11,7 +11,8 @@ class Usuario(Base):
     email = Column(String, unique=True, nullable=False)
     estado = Column(Boolean, nullable=False)
     rol = Column(String, CheckConstraint("rol in ('viewer', 'editor', 'admin')"), nullable=False)
-    salt = Column(String,  nullable=False)
+    salt = Column(String, nullable=False)
 
     # Define an index on the 'email' column
     email_index = Index('idx_email', email)
+    id_index = Index('idx_id', id_usuario)
