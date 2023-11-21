@@ -37,4 +37,10 @@ jobs:
         DB_DATABASE_NAME: ${{ secrets.QA.DB_DATABASE_NAME }}
         SECRET_KEY: ${{ secrets.QA.SECRET_KEY }}
       run: |
+        echo "user: $DB_USER "
+        echo "pw: $DB_PASSWORD "
+        echo "host: DB_HOST "
+        echo " port: $DB_PORT "
+        echo " name: $DB_DATABASE_NAME "
+        echo " secret: $SECRET_KEY "
         pytest run_tests.py
