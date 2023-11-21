@@ -23,3 +23,6 @@ class Paquete(Base):
     cliente_telefono = Column(String, nullable=False)
     cliente_email = Column(String, nullable=False)
     cliente_direccion = Column(String, nullable=False)
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

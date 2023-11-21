@@ -1,6 +1,8 @@
 from config.database import Base
 from sqlalchemy import Column, Integer, Date, String, ForeignKey, func, CheckConstraint
 from sqlalchemy.orm import relationship
+from models.paquete_table import Paquete
+from models.usuario_table import Usuario
 
 
 class SeguimientoPaquete(Base):
@@ -15,5 +17,5 @@ class SeguimientoPaquete(Base):
     fecha_actualizacion = Column(Date, default=func.now(), nullable=False)
     usuario_id = Column(Integer, ForeignKey('usuario.id_usuario'), nullable=False)
 
-    paquete_seguido = relationship("Paquete")
-    usuario_actualizador = relationship("Usuario")
+    paquete_seguido = relationship(Paquete)
+    usuario_actualizador = relationship(Usuario)

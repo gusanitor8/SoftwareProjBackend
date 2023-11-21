@@ -169,7 +169,11 @@ def get_users(page: int):
             .limit(user_quantity)
             .all())
 
-        result = list(map(lambda x: x._asdict(), result))
-        return result
+        if result:
+            result = list(map(lambda x: x._asdict(), result))
+            return result
+        else:
+            return []
+
     finally:
         session.close()
