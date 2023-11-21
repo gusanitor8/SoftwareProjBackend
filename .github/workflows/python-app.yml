@@ -29,5 +29,12 @@ jobs:
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi    
     - name: Test with pytest
+      env:
+        DB_USER: ${{ secrets.QA.DB_USER }}
+        DB_PASSWORD: ${{ secrets.QA.DB_PASSWORD }}
+        DB_HOST: ${{ secrets.QA.DB_HOST }}
+        DB_PORT: ${{ secrets.QA.DB_PORT }}
+        DB_DATABASE_NAME: ${{ secrets.QA.DB_DATABASE_NAME }}
+        SECRET_KEY: ${{ secrets.QA.SECRET_KEY }}
       run: |
         pytest run_tests.py
