@@ -119,3 +119,18 @@ def get_paquete(paquete_id: int):
         return {}
     finally:
         session.close()
+
+
+def invoice_search(invoice: str):
+    try:
+        session = Session()
+        paquetes = session.query(Paquete).filter(Paquete.factura.like(f'%{invoice}%')).limit(10).all()
+
+        if paquetes:
+            paquetes = [paquete.to_dict() for paquete in paquetes]
+            for paquete in paquetes:
+                paquete['fecha_orden'] = paquete['fecha_orden'].isoformat()
+            return paquetes
+        return {}
+    finally:
+        session.close()

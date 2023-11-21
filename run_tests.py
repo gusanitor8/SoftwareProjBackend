@@ -1,5 +1,5 @@
-from src.database.db_package import get_consolidado
+from src.database.db_package import invoice_search
 
 def test_get_consolidado():
-    con = get_consolidado(1)
+    con = invoice_search(1)
     hola = "hola"

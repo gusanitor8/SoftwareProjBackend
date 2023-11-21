@@ -4,7 +4,7 @@ from typing import List, Annotated
 from middlewares.JWTBearer import jwt_bearer
 from dataModels.paquete import PaqueteBase
 from dataModels.consolidado import ConsolidadoBase
-from src.database.db_package import precarga_paquetes, get_consolidado, get_paquete
+from src.database.db_package import precarga_paquetes, get_consolidado, get_paquete, invoice_search
 from src.database.db_auth import roles_match
 from src.Roles import Roles
 
@@ -37,10 +37,9 @@ def upload_precarga(paquetes: List[PaqueteBase], consolidado: ConsolidadoBase,
 
 
 @package_router.get("/get/consolidado/{consolidado_id}", tags=["precarga"])
-def get_consolidado_endpoint(consolidado_id: int,user_id: Annotated[int, Depends(jwt_bearer)]):
+def get_consolidado_endpoint(consolidado_id: int, user_id: Annotated[int, Depends(jwt_bearer)]):
     consolidado = get_consolidado(consolidado_id)
     return JSONResponse(content=consolidado, status_code=200)
-
 
 
 @package_router.get("/get/paquete/{paquete_id}", tags=["precarga"])
@@ -51,3 +50,9 @@ def get_paquete_endpoint(paquete_id: int, user_id: Annotated[int, Depends(jwt_be
 
     except Exception as e:
         return JSONResponse(content={"message": str(e)}, status_code=500)
+
+
+@package_router.get("/search/invoice/{invoice}", tags=["precarga"])
+def get_invoice_endpoint(invoice: str, user_id: Annotated[int, Depends(jwt_bearer)]):
+    paquetes = invoice_search(invoice)
+    return JSONResponse(content=paquetes, status_code=200)
