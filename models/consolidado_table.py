@@ -9,3 +9,6 @@ class Consolidado(Base):
     descripcion = Column(String, nullable=False)
     fecha_consolidacion = Column(Date, default=func.now(), nullable=False)
     transportista = Column(String, nullable=False)
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

@@ -156,3 +156,24 @@ def roles_match(user_id: int, required_role: Roles) -> bool:
             return True
 
     return False
+
+
+def get_users(page: int):
+    user_quantity = 10
+    page = max(0, page - 1) * user_quantity
+    try:
+        session = Session()
+        result = (
+            session.query(Usuario.nombre, Usuario.email, Usuario.rol)
+            .offset(page)
+            .limit(user_quantity)
+            .all())
+
+        if result:
+            result = list(map(lambda x: x._asdict(), result))
+            return result
+        else:
+            return []
+
+    finally:
+        session.close()

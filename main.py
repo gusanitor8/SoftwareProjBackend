@@ -14,6 +14,7 @@ from routers.tracking_router import tracking_router
 from routers.sat_revision_router import sat_revision_router
 
 #ORM
+from models.usuario_table import Usuario
 from models.cambio_usuario_table import CambioUsuario
 from models.consolidacion_table import Consolidacion
 from models.consolidado_table import Consolidado
@@ -23,7 +24,7 @@ from models.paquete_table import Paquete
 from models.revision_sat_table import RevisionSat
 from models.seguimiento_paquete_table import SeguimientoPaquete
 from models.selectivo_sat_table import SelectivoSAT
-from models.usuario_table import Usuario
+
 
 
 app = FastAPI()
